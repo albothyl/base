@@ -1,0 +1,48 @@
+# default environment
+spring:
+  flyway:
+    enabled: false
+  profiles:
+    active: local
+
+# local environment
+---
+#spring.view.prefix: /WEB-INF/jsp/
+#spring.view.suffix: .jsp
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/base?useSSL=false
+    username: study
+    password: hard
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .html
+
+server:
+  port: 8080
+
+# production environment
+---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://localhost:3306/base?useSSL=false
+    username: study
+    password: hard
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+
+server:
+  port: 8081
