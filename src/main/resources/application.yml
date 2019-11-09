@@ -24,10 +24,6 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
-  mvc:
-    view:
-      prefix: /WEB-INF/views/
-      suffix: .html
 
 server:
   port: 8080
@@ -43,7 +39,11 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
 
 server:
-  port: 8081
+  port: 8080

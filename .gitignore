@@ -30,3 +30,25 @@ out/
 
 ### VS Code ###
 .vscode/
+
+*.prefs
+target/
+tmp
+project/
+.metadata
+classes/
+atlassian-ide-plugin.xml
+.sonar/
+sonar-project.*
+*~
+rebel.xml
+buildSrc/
+db-migration/
+contiperf-report/
+bin/
+*/src/generated/
+.DS_Store
+node_modules/
+npm-debug.log
+*.map
+**/derby.log

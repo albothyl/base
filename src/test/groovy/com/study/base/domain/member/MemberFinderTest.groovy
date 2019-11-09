@@ -60,5 +60,6 @@ class MemberFinderTest extends Specification {
 			createdAt == member.createdAt
 			modifiedAt == member.modifiedAt
 		}
+
 	}
 }
