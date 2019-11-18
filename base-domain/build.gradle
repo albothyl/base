@@ -14,8 +14,4 @@ dependencies {
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
-
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude module: 'junit'
-    }
 }

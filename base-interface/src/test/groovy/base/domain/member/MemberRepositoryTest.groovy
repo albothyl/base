@@ -1,6 +1,6 @@
-package com.study.base.domain.member
+package base.domain.member
 
-import com.study.base.domain.member.entity.Member
+import base.domain.member.entity.Member
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
@@ -8,7 +8,7 @@ import spock.lang.Specification
 
 @SpringBootTest
 //@Transactional //rollback
-class MemberFinderTest extends Specification {
+class MemberRepositoryTest extends Specification {
 
 	@Autowired
 	MemberRepository memberRepository
