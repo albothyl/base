@@ -3,7 +3,6 @@ package base.domain.member
 import base.domain.member.entity.Member
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import spock.lang.Specification
 
 @SpringBootTest
@@ -15,11 +14,8 @@ class MemberRepositoryTest extends Specification {
 
 	def "member save test"() {
 		given:
-		def passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-		def password = passwordEncoder.encode("admin")
-
 		def member = Member.builder()
-				.memberPassword(password)
+				.memberPassword("{bcrypt}\$2a\$10\$bX1r6QoadC9c/AMdORDVnuLW4d4e3bUQKZk0MMBhvj/wj2X6CKiJa")
 				.memberName("admin")
 				.memberEmail("admin@naver.com")
 				.memberAge(20)
