@@ -8,6 +8,7 @@ plugins {
 }
 
 apply from: 'flyway.gradle'
+apply from: 'querydsl.gradle'
 
 group = 'com.study'
 version = '0.0.1-SNAPSHOT'
@@ -57,28 +58,4 @@ dependencies {
 
 test {
 	useJUnitPlatform()
-}
-
-def querydslSrcDir = 'src/main/generated'
-
-querydsl {
-	library = "com.querydsl:querydsl-apt"
-	jpa = true
-	querydslSourcesDir = querydslSrcDir
-}
-
-sourceSets {
-	main {
-		java {
-			srcDirs = ['src/main/java', querydslSrcDir]
-		}
-	}
-}
-
-compileQuerydsl{
-	options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-	querydsl.extendsFrom compileClasspath
 }
