@@ -43,4 +43,3 @@ public class Member extends CreatedAndModifiedEntity {
 	private Boolean credentialsNonExpired;
 	private Boolean enabled;
 }
-

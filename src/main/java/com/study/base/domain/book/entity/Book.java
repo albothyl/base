@@ -23,5 +23,5 @@ public class Book extends CreatedAndModifiedEntity {
 
     @ManyToOne
     @JoinColumn(name = "memberId")
-    private Member memberId;
+    private Member member;
 }

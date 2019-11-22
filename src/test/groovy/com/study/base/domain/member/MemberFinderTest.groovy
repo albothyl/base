@@ -1,9 +1,9 @@
 package com.study.base.domain.member
 
 import com.study.base.domain.member.entity.Member
+import com.study.base.domain.support.PasswordEncoderUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import spock.lang.Specification
 
 @SpringBootTest
@@ -15,8 +15,7 @@ class MemberFinderTest extends Specification {
 
 	def "member save test"() {
 		given:
-		def passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-		def password = passwordEncoder.encode("admin")
+		def password = PasswordEncoderUtils.passwordEncode("admin")
 
 		def member = Member.builder()
 				.memberPassword(password)

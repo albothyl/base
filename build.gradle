@@ -9,6 +9,7 @@ plugins {
 
 apply from: 'flyway.gradle'
 apply from: 'querydsl.gradle'
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 group = 'com.study'
 version = '0.0.1-SNAPSHOT'
