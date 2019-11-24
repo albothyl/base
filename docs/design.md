@@ -1,7 +1,7 @@
 
 ### DataBase
 
-![post-db](./img/board.png)
+![post-db](./img/post.png)
 
 ### TODO
 
