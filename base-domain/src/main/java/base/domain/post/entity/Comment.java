@@ -7,8 +7,8 @@ import javax.persistence.*;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "comments", schema = "base")
 public class Comment extends CreatedAndModifiedEntity {

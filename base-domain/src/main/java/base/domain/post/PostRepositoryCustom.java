@@ -4,7 +4,7 @@ import base.domain.post.entity.Post;
 
 import java.util.List;
 
-public interface PostRepositorySupport {
+public interface PostRepositoryCustom  {
 
-    List<Post> findAllFetchJoinWithComments();
+    List<Post> findAllFetchJoin();
 }
