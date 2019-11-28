@@ -1,0 +1,12 @@
+// MYSQL 5.7 이상부터 지원.
+apply plugin: 'org.flywaydb.flyway'
+
+flyway {
+	url = 'jdbc:mysql://localhost:3306/base?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC'
+	driver = "com.mysql.cj.jdbc.Driver"
+	user = 'study'
+	password = 'hard'
+	schemas = ['base']
+	table = 'flyway_migration_history'
+	encoding = 'UTF8'
+}

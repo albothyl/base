@@ -1,1 +1,3 @@
 rootProject.name = 'base'
+include 'base-interface'
+include 'base-domain'
