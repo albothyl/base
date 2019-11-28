@@ -23,6 +23,11 @@ class BookRepositoryTest extends Specification{
         memberRepository.deleteAll()
     }
 
+    def cleanup() {
+        bookRepository.deleteAll()
+        memberRepository.deleteAll()
+    }
+
     def "book innerJoin with member test"() {
         given:
 
@@ -71,7 +76,7 @@ class BookRepositoryTest extends Specification{
         result.size() == 90
 
         for(Book book : result) {
-            book.member != null
+            assert book.member != null
         }
     }
 }

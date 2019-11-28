@@ -13,6 +13,10 @@ class MemberFinderTest extends Specification {
 	@Autowired
 	MemberRepository memberRepository
 
+	def setup() {
+		memberRepository.deleteAll()
+	}
+
 	def "member save test"() {
 		given:
 		def password = PasswordEncoderUtils.passwordEncode("admin")
