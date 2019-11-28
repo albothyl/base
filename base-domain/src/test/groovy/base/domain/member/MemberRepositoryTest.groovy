@@ -1,11 +1,6 @@
 package base.domain.member
 
-<<<<<<< HEAD:src/test/groovy/com/study/base/domain/member/MemberFinderTest.groovy
-import com.study.base.domain.member.entity.Member
-import com.study.base.domain.support.PasswordEncoderUtils
-=======
 import base.domain.member.entity.Member
->>>>>>> master:base-domain/src/test/groovy/base/domain/member/MemberRepositoryTest.groovy
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -23,11 +18,7 @@ class MemberRepositoryTest extends Specification {
 
 	def "member save test"() {
 		given:
-<<<<<<< HEAD:src/test/groovy/com/study/base/domain/member/MemberFinderTest.groovy
-		def password = PasswordEncoderUtils.passwordEncode("admin")
 
-=======
->>>>>>> master:base-domain/src/test/groovy/base/domain/member/MemberRepositoryTest.groovy
 		def member = Member.builder()
 				.memberPassword("{bcrypt}\$2a\$10\$bX1r6QoadC9c/AMdORDVnuLW4d4e3bUQKZk0MMBhvj/wj2X6CKiJa")
 				.memberName("admin")

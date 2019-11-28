@@ -28,4 +28,23 @@ class MemberFinderTest extends Specification {
 			memberGrade == "GOLD"
 		}
 	}
+
+	def "member find test using querydsl"() {
+		given:
+		def memberEmail = "admin@naver.com"
+
+		when:
+		def result = memberRepository.findMemberByMemberEmailUsingQuerydsl(memberEmail)
+
+		then:
+		with(result.get()) {
+			memberName == "admin"
+			memberEmail == "admin@naver.com"
+			memberAge == 20
+			memberSex == "MALE"
+			memberAddress == "korea"
+			memberPhoneNumber == "010-1234-1234"
+			memberGrade == "GOLD"
+		}
+	}
 }

@@ -1,4 +1,4 @@
-package com.study.base.domain.support;
+package base.support;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
