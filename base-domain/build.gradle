@@ -9,6 +9,8 @@ jar {
 }
 
 dependencies {
+    api (project(':base-util'))
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.flywaydb:flyway-core'
 
