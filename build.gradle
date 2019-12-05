@@ -16,6 +16,7 @@ allprojects {
 		}
 	}
 
+	apply plugin: 'java-library'
 	apply plugin: 'java'
 	apply plugin: 'groovy'
 	apply plugin: 'idea'
