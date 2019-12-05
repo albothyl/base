@@ -4,7 +4,7 @@ CREATE TABLE `base`.`posts` (
  `boardType`             VARCHAR(30)   NOT NULL                 COMMENT '게시판 종류',
  `title`                 VARCHAR(300)  NOT NULL                COMMENT '제목',
  `contents`              TINYTEXT      NOT NULL                COMMENT '내용',
- `hit`                   INT(20)       NOT NULL  DEFAULT 0     COMMENT '조회수',
+ `readCount`             INT(20)       NOT NULL  DEFAULT 0     COMMENT '조회수',
  `createdAt`             DATETIME(6)   NOT NULL                COMMENT '게시글 등록 일시',
  `modifiedAt`            DATETIME(6)   NOT NULL                COMMENT '게시글 수정 일시',
 
