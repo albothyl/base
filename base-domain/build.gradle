@@ -5,6 +5,7 @@ plugins {
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 apply from: 'querydsl.gradle'
+apply from: 'flyway.gradle'
 
 bootJar {
     enabled = false
@@ -15,7 +16,7 @@ jar {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.flywaydb:flyway-core'
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.querydsl:querydsl-apt'
