@@ -6,23 +6,19 @@ import base.domain.post.constants.BoardType;
 import base.domain.post.entity.Comment;
 import base.domain.post.entity.Post;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
+import io.github.benas.randombeans.FieldPredicates;
 import io.github.benas.randombeans.api.EnhancedRandom;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,23 +42,13 @@ public class PostRepositoryTests {
     @Transactional
     @Order(1)
     public void saveTest() {
-
         //given
-        Member member = Member.builder()
-                .memberPassword("")
-                .memberName("admin")
-                .memberEmail("admin@naver.com")
-                .memberAge(20)
-                .memberSex("MALE")
-                .memberAddress("korea")
-                .memberPhoneNumber("010-1234-1234")
-                .memberGrade("GOLD")
-                .roles(Arrays.asList("ADMIN"))
-                .accountNonExpired(true)
-                .accountNonLocked(true)
-                .credentialsNonExpired(true)
-                .enabled(true)
+        EnhancedRandom builder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
+                .excludeField(FieldPredicates.named("memberId"))
+                .stringLengthRange(3,5)
+                .collectionSizeRange(1,3)
                 .build();
+        Member member = builder.nextObject(Member.class);
 
         Post post = Post.builder()
                 .boardType(BoardType.NOTICE)
@@ -89,23 +75,13 @@ public class PostRepositoryTests {
     public void customPostRepositoryTest() {
 
         //given
-        Member member = Member.builder()
-                .memberPassword("")
-                .memberName("admin")
-                .memberEmail("admin@naver.com")
-                .memberAge(20)
-                .memberSex("MALE")
-                .memberAddress("korea")
-                .memberPhoneNumber("010-1234-1234")
-                .memberGrade("GOLD")
-                .roles(Arrays.asList("ADMIN"))
-                .accountNonExpired(true)
-                .accountNonLocked(true)
-                .credentialsNonExpired(true)
-                .enabled(true)
+        EnhancedRandom builder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
+                .excludeField(FieldPredicates.named("memberId"))
+                .stringLengthRange(3,5)
+                .collectionSizeRange(1,3)
                 .build();
+        Member member = builder.nextObject(Member.class);
 
-        EnhancedRandom.random(Member.class);
         Post post = Post.builder()
                 .boardType(BoardType.NOTICE)
                 .member(member)
@@ -113,22 +89,20 @@ public class PostRepositoryTests {
                 .contents("내용")
                 .build();
 
-
-        List<Comment> commentList = new ArrayList<>();
-        for(int i=0; i<10; i++){
-            Comment comment  = Comment.builder()
-                    .member(member)
-                    .post(post)
-                    .contents("댓글" + i)
-                    .build();
-            commentList.add(comment);
-        }
         //when
         Member savedMember = memberRepository.save(member);
         Post savedPost = postRepository.save(post);
 
-        List<Post> fetchJoinPost = postRepository.findAllLeftJoinWithMember();
+        for(int i=0; i<10; i++){
+            Comment comment  = Comment.builder()
+                    .member(member)
+                    .postId(savedPost.getPostId())
+                    .contents("댓글" + i)
+                    .build();
+            commentRepository.save(comment);
+        }
 
+        List<Post> fetchJoinPost = postRepository.findByIdWithComments(post.getPostId());
         //then
         assertThat(savedMember).isNotNull();
         assertThat(savedPost).isNotNull();
@@ -136,27 +110,20 @@ public class PostRepositoryTests {
         assertThat(fetchJoinPost).hasSize(1);
         assertThat(fetchJoinPost.get(0).getPostId()).isEqualTo(savedPost.getPostId());
         assertThat(fetchJoinPost.get(0).getMember().getMemberId()).isEqualTo(savedMember.getMemberId());
+        assertThat(fetchJoinPost.get(0).getComments()).hasSize(10);
     }
 
 
     @Test
     public void customCommentRepositoryTest(){
         //given
-        Member member = Member.builder()
-                .memberPassword("")
-                .memberName("admin")
-                .memberEmail("admin@naver.com")
-                .memberAge(20)
-                .memberSex("MALE")
-                .memberAddress("korea")
-                .memberPhoneNumber("010-1234-1234")
-                .memberGrade("GOLD")
-                .roles(Arrays.asList("ADMIN"))
-                .accountNonExpired(true)
-                .accountNonLocked(true)
-                .credentialsNonExpired(true)
-                .enabled(true)
+        EnhancedRandom builder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
+                .excludeField(FieldPredicates.named("memberId"))
+                .stringLengthRange(3,5)
+                .collectionSizeRange(1,3)
                 .build();
+
+        Member member = builder.nextObject(Member.class);
 
         Post post = Post.builder()
                 .boardType(BoardType.NOTICE)
@@ -167,7 +134,7 @@ public class PostRepositoryTests {
 
         Comment comment  = Comment.builder()
                 .member(member)
-                .post(post)
+                .postId(post.getPostId())
                 .contents("댓글")
                 .build();
 
@@ -175,22 +142,8 @@ public class PostRepositoryTests {
         Post savedPost = postRepository.save(post);
         Comment savedComment = commentRepository.save(comment);
 
-
-
-        Pageable pageable =  PageRequest.of(0, 10);
-        Page<Comment> commentPage = commentRepository.findByPostId(savedPost.getPostId(), pageable);
-        List<Comment> list = commentPage.get().collect(Collectors.toList());
-        Optional<Comment> optionalComment =  commentRepository.findByCommentIdAndPostId(savedComment.getCommentId(), savedPost.getPostId());
-
-
         assertThat(savedMember).isNotNull();
         assertThat(savedPost).isNotNull();
         assertThat(savedComment).isNotNull();
-        assertThat(commentPage).isNotNull();
-
-        assertThat(list).hasSize(1);
-        assertThat(optionalComment).isPresent();
-        assertThat(optionalComment.get().getCommentId()).isEqualTo(savedComment.getCommentId());
-
     }
 }
