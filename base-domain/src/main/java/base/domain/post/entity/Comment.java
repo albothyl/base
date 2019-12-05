@@ -3,12 +3,10 @@ package base.domain.post.entity;
 import base.domain.member.entity.Member;
 import base.domain.support.entity.CreatedAndModifiedEntity;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@Getter
+@Data
 @Builder
 @ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -25,11 +23,8 @@ public class Comment extends CreatedAndModifiedEntity {
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
-    @ManyToOne
     @JoinColumn(name = "postId", nullable = false)
-    //테스트 및 확인필요
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Post post;
+    private Long postId;
 
     private String contents;
 

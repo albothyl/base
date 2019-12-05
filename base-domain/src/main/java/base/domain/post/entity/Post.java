@@ -7,16 +7,15 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
-@Getter
+@Data
 @Builder
 @ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "posts", schema = "base")
-//클래스 이름 변경 확인 필
 public class Post extends CreatedAndModifiedEntity {
 
     @Id
@@ -33,14 +32,13 @@ public class Post extends CreatedAndModifiedEntity {
     private String title;
 
     private String contents;
-    //hit 컬럼 명 readCount 변경
-    private int hit;
 
-    // 단방향으로 post에서 재설정
-    //삭제 양방향 제거
-//    @ToString.Exclude
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name="postId")
-//    private Collection<Comment> comments = new ArrayList<>();
+    private int readCount;
+
+
+    @ToString.Exclude
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "postId")
+    private final List<Comment> comments = new ArrayList<>();
 
 }
