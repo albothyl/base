@@ -21,7 +21,9 @@ public class MemberServiceImpl implements MemberService {
 
         String currentPassword = member.getMemberPassword();
 
-        if(currentPassword.equals(newPassword)) throw new IllegalArgumentException("password is equal");
+        if(currentPassword.equals(newPassword)) {
+            throw new IllegalArgumentException("password is equal");
+        }
 
         member.changePassword(newPassword);
 
