@@ -28,4 +28,7 @@ public class Comment extends CreatedAndModifiedEntity {
 
     private String contents;
 
+    public void update(String contents){
+        this.contents = contents;
+    }
 }

@@ -18,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -44,11 +42,11 @@ public class PostRepositoryTests {
     public void saveTest() {
         //given
         EnhancedRandom builder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
-                .excludeField(FieldPredicates.named("memberId"))
                 .stringLengthRange(3,5)
                 .collectionSizeRange(1,3)
                 .build();
-        Member member = builder.nextObject(Member.class);
+
+        Member member = builder.nextObject(Member.class, "memberId");
 
         Post post = Post.builder()
                 .boardType(BoardType.NOTICE)
@@ -76,11 +74,11 @@ public class PostRepositoryTests {
 
         //given
         EnhancedRandom builder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
-                .excludeField(FieldPredicates.named("memberId"))
                 .stringLengthRange(3,5)
                 .collectionSizeRange(1,3)
                 .build();
-        Member member = builder.nextObject(Member.class);
+
+        Member member = builder.nextObject(Member.class, "memberId");
 
         Post post = Post.builder()
                 .boardType(BoardType.NOTICE)
@@ -102,15 +100,14 @@ public class PostRepositoryTests {
             commentRepository.save(comment);
         }
 
-        List<Post> fetchJoinPost = postRepository.findByIdWithComments(post.getPostId());
+        Post fetchJoinPost = postRepository.findByIdWithComments(post.getPostId());
         //then
         assertThat(savedMember).isNotNull();
         assertThat(savedPost).isNotNull();
         assertThat(fetchJoinPost).isNotNull();
-        assertThat(fetchJoinPost).hasSize(1);
-        assertThat(fetchJoinPost.get(0).getPostId()).isEqualTo(savedPost.getPostId());
-        assertThat(fetchJoinPost.get(0).getMember().getMemberId()).isEqualTo(savedMember.getMemberId());
-        assertThat(fetchJoinPost.get(0).getComments()).hasSize(10);
+        assertThat(fetchJoinPost.getPostId()).isEqualTo(savedPost.getPostId());
+        assertThat(fetchJoinPost.getMember().getMemberId()).isEqualTo(savedMember.getMemberId());
+        assertThat(fetchJoinPost.getComments()).hasSize(10);
     }
 
 

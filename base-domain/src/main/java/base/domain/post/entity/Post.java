@@ -35,10 +35,18 @@ public class Post extends CreatedAndModifiedEntity {
 
     private int readCount;
 
-
-    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "postId")
-    private final List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
+
+    public void update(Post post) {
+        this.title = post.getTitle();
+        this.contents = post.getContents();
+        this.boardType = post.getBoardType();
+    }
+
+    public void increaseReadCount() {
+        this.readCount += 1;
+    }
 
 }
