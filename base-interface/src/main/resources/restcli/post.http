@@ -1,0 +1,38 @@
+### Get All post
+GET http://localhost:8081/posts?page=0&size=5&sort=postId&direction=DESC
+
+### Get post by postId
+GET http://localhost:8081/posts/1
+
+### Create test post
+POST http://localhost:8081/posts
+Content-Type: application/json
+
+{
+  "member": {
+    "memberId": 1
+  },
+  "boardType": "NOTICE",
+  "title": "제목",
+  "contents": "내용",
+  "readCount": 0
+}
+
+### Update post by postId
+PUT http://localhost:8081/posts/8
+Content-Type: application/json
+
+{
+  "member": {
+    "memberId": 1
+  },
+  "boardType": "NOTICE",
+  "title": "제목234",
+  "contents": "내용234556565656",
+  "readCount": 0
+}
+
+### Delete post by postId
+DELETE http://localhost:8081/posts/1
+
+###

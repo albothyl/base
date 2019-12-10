@@ -1,0 +1,22 @@
+### Create test comment
+POST http://localhost:8081/posts/comment
+Content-Type: application/json
+
+{
+  "member": {
+    "memberId": 1
+  },
+  "postId": 1,
+  "contents": "댓글 내용"
+}
+
+### Update comment by commentId
+PATCH http://localhost:8081/posts/comment/1
+Content-Type: application/json
+
+{
+  "contents": "댓글 내용 수정 완료"
+}
+
+### Delete comment by commentid
+DELETE http://localhost:8081/posts/1
