@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberControllerImpl implements MemberController {
 
   private final MemberChanger memberChanger;
-  
+
   @Override
   @PatchMapping("/members/{memberId}")
-  public ResponseEntity updatePassword(@PathVariable Long memberId, @RequestBody String newPassword) {
+  public ResponseEntity updatePassword(@PathVariable final Long memberId, @RequestBody final String newPassword) {
     memberChanger.changePassword(memberId, newPassword);
 
     return ResponseEntity.ok().build();

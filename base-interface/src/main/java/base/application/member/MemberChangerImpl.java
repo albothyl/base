@@ -16,13 +16,13 @@ public class MemberChangerImpl implements MemberChanger {
 
     @Override
     @Transactional
-    public void changePassword(Long memberId, String newPassword) {
+    public void changePassword(final Long memberId, final String newPassword) {
         final Member member = memberRepository.findById(memberId)
             .orElseThrow(
                 () -> new IllegalArgumentException("member is not found")
             );
 
-        String currentPassword = member.getMemberPassword();
+        final String currentPassword = member.getMemberPassword();
 
         if(StringUtils.equals(currentPassword, newPassword)) {
             throw new MemberPasswordEqualException("new password and exist password are equal");

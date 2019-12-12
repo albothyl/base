@@ -43,7 +43,7 @@ public class Member extends CreatedAndModifiedEntity {
 	private Boolean credentialsNonExpired;
 	private Boolean enabled;
 
-	public void changePassword(String newPassword) {
+	public void changePassword(final String newPassword) {
 		memberPassword = newPassword;
 	}
 }
