@@ -1,8 +1,8 @@
 <template>
     <div>
         <div>순서 {{board.seq}}</div>
-        <div>제목 <input type="text" v-model="board.title"/></div>
-        <div>내용 <input type="text" v-model="board.content"/></div>
+        <div>제목 <b-form-input v-model="board.title"/></div>
+        <div>내용 <b-form-textarea v-model="board.content"/></div>
         <div>
             <button v-on:click="updateBoard">수정</button>
             <button v-on:click="deleteBoard(board.seq)">삭제</button>
