@@ -1,20 +1,35 @@
 <template>
-    <div>
-        <table>
+    <div class="overflow-auto">
+        <button v-on:click="write">글쓰기</button>
+        <table class="table">
+            <thead>
             <tr>
-                <td>순서</td>
-                <td>제목</td>
-                <td>내용</td>
-                <td>등록일</td>
+                <th>seq</th>
+                <th>title</th>
+                <th>content</th>
+                <th>createDate</th>
             </tr>
-            <tr v-for="item in boards" v-bind:key="item.seq" @click="detail(item.seq)">
+            </thead>
+            <tbody>
+            <tr v-for="(item, index) in boards" :key="item.seq" @click="detail(item.seq)">
                 <td>{{item.seq}}</td>
                 <td>{{item.title}}</td>
                 <td>{{item.content}}</td>
                 <td>{{item.createDate}}</td>
             </tr>
+            </tbody>
         </table>
-        <button v-on:click="write">글쓰기</button>
+
+        <!-- v-on:change="changePage()"  changePage 메소드의 인자로 제대로된 페이지값이 전될되지 않아서 사용하지 않음. @change 를 사용함 -->
+        <b-pagination
+        @change="changePage"
+        v-model="page"
+        :total-rows="rows"
+        :per-page="size"
+        aria-controls="my-table"
+        ></b-pagination>
+
+        <p class="mt-3">Current Page: {{ page }}</p>
     </div>
 </template>
 <script>
@@ -23,13 +38,27 @@ export default {
     name: 'BoardList',
     data() {
         return {
-            boards:[]
+            boards: [],
+            fields: ['seq', 'title', 'content', 'createDate'],
+            page: 1,
+            size: 5,
+            sort: 'seq,desc',
+            rows: ''
         }
     },
     created() {
-        this.$http.get('http://localhost:8080/list').then((response) => {
+        this.$http.get('http://localhost:8080/getBoardList', {
+                        params: {
+                            page: this.page-1,
+                            size: this.size,
+                            sort: this.sort
+                        }
+        }).then((response) => {
             console.log(response)
-            this.boards = response.data
+            this.boards = response.data.content
+            this.page = response.data.number+1
+            this.size = response.data.size
+            this.rows = response.data.totalElements
         })
     },
     methods: {
@@ -44,6 +73,21 @@ export default {
                 params: {
                     seq: index
                 }
+            })
+        },
+        changePage(requestPage) {
+            this.$http.get('http://localhost:8080/getBoardList', {
+                        params: {
+                            page: requestPage-1,
+                            size: this.size,
+                            sort: this.sort
+                        }
+            }).then((response) => {
+                console.log(response)
+                this.boards = response.data.content
+                this.page = response.data.number+1
+                this.size = response.data.size
+                this.rows = response.data.totalElements
             })
         }
     },
