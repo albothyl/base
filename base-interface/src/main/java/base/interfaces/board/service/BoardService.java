@@ -1,10 +1,11 @@
 package base.interfaces.board.service;
 
 import base.domain.board.entity.Board;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface BoardService {
-    public List<Board> getList();
+    public Page<Board> getList(Pageable pageable);
 
     public void insertBoard(Board board);
 

@@ -3,8 +3,9 @@ package base.interfaces.board.service;
 import base.domain.board.BoardRepository;
 import base.domain.board.entity.Board;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -13,8 +14,8 @@ public class BoardServiceImpl implements BoardService {
     private BoardRepository boardRepository;
 
     @Override
-    public List<Board> getList() {
-        return (List<Board>) boardRepository.findAll();
+    public Page<Board> getList(Pageable pageable) {
+        return boardRepository.findAll(pageable);
     }
 
     @Override
