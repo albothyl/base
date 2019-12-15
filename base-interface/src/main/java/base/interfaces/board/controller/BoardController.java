@@ -2,12 +2,14 @@ package base.interfaces.board.controller;
 
 import base.domain.board.entity.Board;
 import base.interfaces.board.service.BoardService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+@Slf4j
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
 public class BoardController {
@@ -15,10 +17,11 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @GetMapping("/list")
-    public List<Board> getList(Model model) {
+    @GetMapping("/getBoardList")
+    public Page<Board> getBoardList(@PageableDefault Pageable pageable) {
 
-        List<Board> boardList = boardService.getList();
+        log.info("pageNumber: "+pageable);
+        Page<Board> boardList = boardService.getList(pageable);
 
         return boardList;
     }
