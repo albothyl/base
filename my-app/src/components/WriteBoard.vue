@@ -1,7 +1,7 @@
 <template>
     <div>
-        <input v-model="title" placeholder="제목" />
-        <textarea v-model="content" placeholder="내용" />
+        <b-form-input v-model="title" placeholder="제목" />
+        <b-form-textarea v-model="content" placeholder="내용" />
         <button v-on:click="write">작성</button>
     </div>
 </template>
