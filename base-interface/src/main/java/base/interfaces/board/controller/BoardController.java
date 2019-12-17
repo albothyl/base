@@ -17,8 +17,8 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @GetMapping("/getBoardList")
-    public Page<Board> getBoardList(@PageableDefault Pageable pageable) {
+    @GetMapping("/boards")
+    public Page<Board> getBoards(@PageableDefault Pageable pageable) {
 
         log.info("pageNumber: "+pageable);
         Page<Board> boardList = boardService.getList(pageable);
@@ -26,7 +26,7 @@ public class BoardController {
         return boardList;
     }
 
-    @PostMapping("/insertBoard")
+    @PostMapping("/boards")
     public String insertBoard(@RequestBody Board board) {
 
         boardService.insertBoard(board);
@@ -34,7 +34,7 @@ public class BoardController {
         return "OK";
     }
 
-    @GetMapping("/getBoard/{seq}")
+    @GetMapping("/boards/{seq}")
     public Board getBoard(@PathVariable Long seq) {
 
         Board board = boardService.getBoard(seq);
@@ -42,7 +42,7 @@ public class BoardController {
         return board;
     }
 
-    @PostMapping("/updateBoard")
+    @PutMapping("/boards")
     public String updateBoard(@RequestBody Board board) {
 
         boardService.updateBoard(board);
@@ -50,7 +50,7 @@ public class BoardController {
         return "OK";
     }
 
-    @GetMapping("/deleteBoard/{seq}")
+    @DeleteMapping("/boards/{seq}")
     public String deleteBoard(@PathVariable Long seq) {
 
         boardService.deleteBoard(seq);
