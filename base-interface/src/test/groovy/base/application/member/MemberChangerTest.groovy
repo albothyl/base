@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 @SpringBootTest
-class MemberChangerImplTest extends Specification {
+class MemberChangerTest extends Specification {
 
     @Autowired
     MemberChanger memberChanger
@@ -26,8 +26,10 @@ class MemberChangerImplTest extends Specification {
         given:
         Member member = EnhancedRandom.random(Member)
 
+        def differentId = member.memberId+1
+
         when:
-        memberChanger.changePassword(member.memberId+1, "newPassword")
+        memberChanger.changePassword(differentId, "newPassword")
 
         then:
         thrown(IllegalArgumentException)
@@ -35,26 +37,17 @@ class MemberChangerImplTest extends Specification {
 
     def "새로운 패스워드가 기존 패스워드와 동일할 때 IllegalArgumentException 발생"() {
         given:
-        def member = Member.builder()
-                .memberPassword("{bcrypt}\$2a\$10\$bX1r6QoadC9c/AMdORDVnuLW4d4e3bUQKZk0MMBhvj/wj2X6CKiJa")
-                .memberName("admin")
-                .memberEmail("admin@naver.com")
-                .memberAge(20)
-                .memberSex("MALE")
-                .memberAddress("korea")
-                .memberPhoneNumber("010-1234-1234")
-                .memberGrade("GOLD")
-                .roles(["ADMIN"])
-                .accountNonExpired(true)
-                .accountNonLocked(true)
-                .credentialsNonExpired(true)
-                .enabled(true)
-                .build()
+        def builder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
+                .stringLengthRange(3,5)
+                .collectionSizeRange(1,3)
+                .build();
 
-        memberRepository.save(member)
+        def testMember = builder.nextObject(Member, "memberId")
+
+        testMember = memberRepository.save(testMember)
 
         when:
-        memberChanger.changePassword(member.memberId, member.memberPassword)
+        memberChanger.changePassword(testMember.memberId, testMember.memberPassword)
 
         then:
         thrown(MemberPasswordEqualException)
@@ -66,7 +59,6 @@ class MemberChangerImplTest extends Specification {
                 .stringLengthRange(3,5)
                 .collectionSizeRange(1,3)
                 .build();
-
 
         def testMember = builder.nextObject(Member, "memberId")
 
@@ -81,7 +73,7 @@ class MemberChangerImplTest extends Specification {
         then:
         with(result.get()) {
             memberId == testMember.memberId
-            memberPassword == "newPassword"
+            memberPassword == newPassword
         }
     }
 }
