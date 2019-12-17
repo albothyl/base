@@ -15,7 +15,7 @@
                 <td>{{item.seq}}</td>
                 <td>{{item.title}}</td>
                 <td>{{item.content}}</td>
-                <td>{{item.createDate}}</td>
+                <td>{{moment(item.createDate).format('YYYY-MM-DD hh:mm:ss')}}</td>
             </tr>
             </tbody>
         </table>
