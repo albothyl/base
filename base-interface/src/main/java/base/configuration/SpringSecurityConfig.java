@@ -51,6 +51,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
+	// TODO: 17/12/2019 "/boards" "/boards/{seq}" delete  
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
 			.authorizeRequests()
