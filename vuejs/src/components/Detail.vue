@@ -23,14 +23,14 @@ export default {
     },
     created() {
         const seq = this.$route.params.seq
-        this.$http.get(`http://localhost:8080/getBoard/${seq}`).then((response) => {
+        this.$http.get(`http://localhost:8080/boards/${seq}`).then((response) => {
             console.log(response)
             this.board = response.data
         })
     },
     methods: {
         updateBoard() {
-            this.$http.post('http://localhost:8080/updateBoard',{
+            this.$http.put('http://localhost:8080/boards',{
                 seq: this.board.seq,
 			    title: this.board.title,
                 content: this.board.content
@@ -43,12 +43,12 @@ export default {
 		    })
         },
         deleteBoard(seq) {
-            this.$http.get(`http://localhost:8080/deleteBoard/${seq}`).then((response) => {
+            this.$http.delete(`http://localhost:8080/boards/${seq}`).then((response) => {
                 console.log(response)
                 if(response.data === 'OK'){
                     console.log('success')
                     this.$router.push({
-                        path:'/list'
+                        path:'/boards'
                     })
                 } else {
                     console.log('failed')

@@ -17,14 +17,14 @@ export default {
     methods: {
         write() {
             
-            this.$http.post('http://localhost:8080/insertBoard',{
+            this.$http.post('http://localhost:8080/boards',{
 			    title:this.title,
                 content:this.content
 		    }).then((response) => {
                 if(response.data === 'OK'){
                     console.log('success')
                     this.$router.push({
-                        path:'list'
+                        path:'boards'
                     })
                 } else {
                     console.log('failed')

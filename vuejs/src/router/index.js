@@ -15,7 +15,7 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/list',
+      path: '/boards',
       name: 'BoardList',
       component: BoardList
     },

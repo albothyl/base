@@ -47,7 +47,7 @@ export default {
         }
     },
     created() {
-        this.$http.get('http://localhost:8080/getBoardList', {
+        this.$http.get('http://localhost:8080/boards', {
                         params: {
                             page: this.page-1,
                             size: this.size,
@@ -76,7 +76,7 @@ export default {
             })
         },
         changePage(requestPage) {
-            this.$http.get('http://localhost:8080/getBoardList', {
+            this.$http.get('http://localhost:8080/boards', {
                         params: {
                             page: requestPage-1,
                             size: this.size,
