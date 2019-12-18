@@ -13,6 +13,7 @@ import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.util.NumberUtils;
 
@@ -47,6 +48,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("게시글 생성 테스트")
     public void createPostTest() throws Exception {
         //given
@@ -68,6 +70,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("게시글 변경 테스트")
     public void updatePostTest() throws Exception {
         //given
@@ -90,6 +93,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
 
 
     @Test
+    @WithMockUser
     @DisplayName("게시글 및 댓글 리스트 조인 조회 테스트")
     public void findPostWithCommentTest() throws Exception {
         //given
@@ -131,6 +135,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("게시글 삭제 테스트")
     public void deletePostTest() throws Exception {
         //given
