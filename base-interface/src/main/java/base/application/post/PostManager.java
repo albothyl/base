@@ -29,10 +29,8 @@ public class PostManager {
         return persistPost;
     }
 
-    public Post deletePost(Long postId) {
-        Optional<Post> persistPost = postRepository.findById(postId);
-        persistPost.ifPresent(postRepository::delete);
-        return persistPost.orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
     }
 
     @Transactional(readOnly = true)
