@@ -29,7 +29,10 @@ export default {
                 } else {
                     console.log('failed')
                 }
-		    })
+		    }).catch(error => {
+                alert('글쓰기 실패! '+error)
+                console.log(error)
+            })
 
 
         }

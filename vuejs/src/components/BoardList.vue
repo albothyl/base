@@ -59,6 +59,9 @@ export default {
             this.page = response.data.number+1
             this.size = response.data.size
             this.rows = response.data.totalElements
+        }).catch(error => {
+            alert('리스트 조회 실패! '+error)
+            console.log(error)
         })
     },
     methods: {
@@ -88,6 +91,9 @@ export default {
                 this.page = response.data.number+1
                 this.size = response.data.size
                 this.rows = response.data.totalElements
+            }).catch(error => {
+                alert('리스트 조회 실패! '+error)
+                console.log(error)
             })
         }
     },
