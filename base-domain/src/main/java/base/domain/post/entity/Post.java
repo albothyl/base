@@ -33,7 +33,7 @@ public class Post extends CreatedAndModifiedEntity {
 
     private String contents;
 
-    private int readCount;
+    private long readCount;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "postId")
@@ -45,8 +45,8 @@ public class Post extends CreatedAndModifiedEntity {
         this.boardType = post.getBoardType();
     }
 
-    public void increaseReadCount() {
-        this.readCount += 1;
+    public void updateReadCount(long readCount) {
+        this.readCount = readCount;
     }
 
 }
