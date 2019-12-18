@@ -1,6 +1,8 @@
 package base.interfaces.post;
 
+import base.application.post.CachedPostProvider;
 import base.application.post.PostManager;
+import base.domain.post.cache.CachedPost;
 import base.domain.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,16 +20,21 @@ import javax.validation.Valid;
 public class PostController {
 
     private final PostManager postManager;
+    private final CachedPostProvider cachedPostProvider;
 
     @GetMapping
     public Page<Post> findAllPosts(
             @PageableDefault(sort = {"postId"}, page = 10, size = 10) Pageable pageable) {
-        return postManager.findAllPosts(pageable);
+        Page<Post> posts = postManager.findAllPosts(pageable);
+        posts.forEach(this::updateReadCount);
+        return posts;
     }
 
     @GetMapping(path = "/{postId}")
     public Post findPost(@PathVariable Long postId) {
-        return postManager.findByPostIdWithComments(postId);
+        Post post = postManager.findByPostIdWithComments(postId);
+        updateReadCount(post);
+        return post;
     }
 
     @PostMapping
@@ -38,7 +45,7 @@ public class PostController {
 
     @PutMapping(path = "/{postId}")
     public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody Post post) {
-        Post updatePost = postManager.updatePost(postId, post);
+        postManager.updatePost(postId, post);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
@@ -46,6 +53,20 @@ public class PostController {
     @DeleteMapping(path = "/{postId}")
     public ResponseEntity<Post> deletePost(@PathVariable Long postId) {
         postManager.deletePost(postId);
+        cachedPostProvider.remove(postId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private void updateReadCount(Post post){
+        CachedPost cachedPost = cachedPostProvider.get(post.getPostId());
+        if(cachedPost==null){
+            cachedPostProvider.set(post.getPostId(), post);
+        } else {
+            if(cachedPost.getCount() == cachedPostProvider.max_read_count){
+                postManager.updatePost(cachedPost.getPost().getPostId(), cachedPost.getPost());
+            } else{
+                cachedPost.count++;
+            }
+        }
     }
 }

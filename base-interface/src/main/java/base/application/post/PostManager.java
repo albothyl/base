@@ -15,6 +15,7 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class PostManager {
+
     private final PostRepository postRepository;
 
     public Post createPost(Post post) {
@@ -26,6 +27,14 @@ public class PostManager {
                 .orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
 
         persistPost.update(post);
+        return persistPost;
+    }
+
+    public Post updateReadCount(Long postId, long count) {
+        Post persistPost = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
+
+        persistPost.updateReadCount(count);
         return persistPost;
     }
 

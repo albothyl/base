@@ -119,4 +119,23 @@ public class PostManagerTests {
         verify(postRepository, atLeastOnce()).findByIdWithComments(post.getPostId());
     }
 
+    @Test
+    @DisplayName("조회수 업데이트 테스트")
+    public void readCountUpdateTest() {
+        Post updatePost = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build()
+                .nextObject(Post.class);
+
+        long expectedReadCount = 10;
+
+        given(postRepository.findById(post.getPostId()))
+                .willReturn(Optional.ofNullable(updatePost));
+
+        Post updatePosted = postManager.updateReadCount(post.getPostId(), expectedReadCount);
+
+        verify(postRepository, atLeastOnce()).findById(post.getPostId());
+
+        assertThat(updatePosted).isNotNull();
+        assertThat(updatePosted.getReadCount()).isEqualTo(expectedReadCount);
+
+    }
 }
