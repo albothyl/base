@@ -1,6 +1,6 @@
 package base.interfaces.post;
 
-import base.application.post.PostService;
+import base.application.post.PostManager;
 import base.domain.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,35 +17,35 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final PostService postService;
+    private final PostManager postManager;
 
     @GetMapping
     public Page<Post> findAllPosts(
-            @PageableDefault(sort = {"postId"}) Pageable pageable) {
-        return postService.findAllPosts(pageable);
+            @PageableDefault(sort = {"postId"}, page = 10, size = 10) Pageable pageable) {
+        return postManager.findAllPosts(pageable);
     }
 
     @GetMapping(path = "/{postId}")
     public Post findPost(@PathVariable Long postId) {
-        return postService.findByPostIdWithComments(postId);
+        return postManager.findByPostIdWithComments(postId);
     }
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody @Valid Post post) {
-        Post createPost = postService.createPost(post);
+    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+        Post createPost = postManager.createPost(post);
         return new ResponseEntity<>(createPost, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{postId}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody @Valid Post post) {
-        Post updatePost = postService.updatePost(postId, post);
+    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody Post post) {
+        Post updatePost = postManager.updatePost(postId, post);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     @DeleteMapping(path = "/{postId}")
     public ResponseEntity<Post> deletePost(@PathVariable Long postId) {
-        Post deletePost = postService.deletePost(postId);
+        Post deletePost = postManager.deletePost(postId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

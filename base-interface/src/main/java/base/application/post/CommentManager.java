@@ -12,8 +12,8 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CommentService {
-    final CommentRepository commentRepository;
+public class CommentManager {
+    private final CommentRepository commentRepository;
 
     public Comment createComment(Comment comment) {
         return commentRepository.save(comment);

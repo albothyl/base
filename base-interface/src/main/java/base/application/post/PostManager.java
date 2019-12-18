@@ -14,16 +14,17 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PostService {
-    final PostRepository postRepository;
+public class PostManager {
+    private final PostRepository postRepository;
 
     public Post createPost(Post post) {
         return postRepository.save(post);
     }
 
-    @Transactional(readOnly = true)
     public Post updatePost(Long postId, Post post) {
-        Post persistPost = postRepository.getOne(postId);
+        Post persistPost = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
+
         persistPost.update(post);
         return persistPost;
     }
