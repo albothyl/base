@@ -40,7 +40,7 @@ public class PostManager {
 
     @Transactional(readOnly = true)
     public Post findByPostIdWithComments(Long postId) {
-        return Optional.of(postRepository.findByIdWithComments(postId))
+        return Optional.ofNullable(postRepository.findByIdWithComments(postId))
                 .orElseThrow(() -> new ResourceNotFoundException("PostId " + postId + " not found"));
     }
 }
