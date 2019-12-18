@@ -20,7 +20,9 @@ public class CommentManager {
     }
 
     public Comment updateComment(Long commentId, String contents) {
-        Comment persistComment = commentRepository.getOne(commentId);
+        Comment persistComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("commentId " + commentId + " not found"));
+
         persistComment.update(contents);
         return persistComment;
     }
