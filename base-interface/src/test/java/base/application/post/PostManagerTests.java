@@ -122,8 +122,10 @@ public class PostManagerTests {
     @Test
     @DisplayName("조회수 업데이트 테스트")
     public void readCountUpdateTest() {
-        Post updatePost = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build()
-                .nextObject(Post.class);
+        Post updatePost = Post.builder()
+                .postId(1l)
+                .contents("내용")
+                .build();
 
         long expectedReadCount = 10;
 

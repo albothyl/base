@@ -1,5 +1,6 @@
 package base.interfaces.post;
 
+import base.application.post.CachedPostProvider;
 import base.domain.member.MemberRepository;
 import base.domain.member.entity.Member;
 import base.domain.post.CommentRepository;
@@ -15,10 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.NumberUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,6 +37,9 @@ public class PostControllerTests extends BaseTestControllerSupport {
     private PostRepository postRepository;
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private CachedPostProvider cachedPostProvider;
 
     private Member savedMember;
 
@@ -155,5 +162,46 @@ public class PostControllerTests extends BaseTestControllerSupport {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @WithMockUser
+    @DisplayName("조회수 캐쉬 테스트")
+    @Transactional
+    public void updateCacheTest() throws Exception {
+        long cacheUpdateCount = cachedPostProvider.max_read_count;
+        //given
+        Post post = Post.builder()
+                .member(savedMember)
+                .boardType(BoardType.FREE)
+                .title("제목")
+                .contents("내용")
+                .build();
 
+        Post savedPost = postRepository.save(post);
+
+        String url = "/posts/" + savedPost.getPostId();
+
+        //when, then
+        for(int i=0; i<cacheUpdateCount; i++){
+            mockMvc.perform(get(url)
+                    .param("page", "0")
+                    .param("size", "5")
+                    .param("sort", "postId")
+                    .contentType(JSON_UTF8_MEDIA_TYPE)
+                    .accept(JSON_UTF8_MEDIA_TYPE))
+                    .andExpect(status().isOk());
+        }
+
+        Optional<Post> optionalPost = postRepository.findById(savedPost.getPostId());
+        assertThat(optionalPost).isPresent();
+        assertThat(optionalPost.get().getReadCount()).isEqualTo(cacheUpdateCount);
+    }
 }
+
+
+
+
+
+
+
+
+
