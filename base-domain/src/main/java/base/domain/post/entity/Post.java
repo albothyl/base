@@ -46,7 +46,7 @@ public class Post extends CreatedAndModifiedEntity {
     }
 
     public void updateReadCount(long readCount) {
-        this.readCount = readCount;
+        this.readCount += readCount;
     }
 
 }

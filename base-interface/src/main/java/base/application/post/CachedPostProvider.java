@@ -30,6 +30,7 @@ public class CachedPostProvider {
         CachedPost cachedPost = CachedPost.builder()
                 .key(getKey(postId))
                 .post(post)
+                .count(1)
                 .build();
 
         map.put(getKey(postId), cachedPost);

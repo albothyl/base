@@ -62,10 +62,10 @@ public class PostController {
         if(cachedPost==null){
             cachedPostProvider.set(post.getPostId(), post);
         } else {
+            cachedPost.count++;
             if(cachedPost.getCount() == cachedPostProvider.max_read_count){
-                postManager.updatePost(cachedPost.getPost().getPostId(), cachedPost.getPost());
-            } else{
-                cachedPost.count++;
+                postManager.updateReadCount(cachedPost.getPost().getPostId(), cachedPost.getCount());
+                cachedPost.count=0;
             }
         }
     }
