@@ -47,45 +47,4 @@ class MemberFinderTest extends Specification {
             memberGrade == "GOLD"
         }
     }
-
-    def "member find test using criteria"() {
-        given:
-        def memberEmail = "admin@naver.com"
-
-        when:
-        def result = memberRepository.findMemberByMemberEmailUsingCriteria(memberEmail)
-
-        then:
-        with(result.get()) {
-            memberName == "admin"
-            memberEmail == "admin@naver.com"
-            memberAge == 20
-            memberSex == "MALE"
-            memberAddress == "korea"
-            memberPhoneNumber == "010-1234-1234"
-            memberGrade == "GOLD"
-        }
-    }
-
-    def "member find test using specification"() {
-        given:
-        def memberEmail = "admin@naver.com"
-
-        when:
-		def result = memberRepository.findOne(org.springframework.data.jpa.domain.Specification
-				.where(MemberSpecification.memberEmailEq(memberEmail)))
-
-        then:
-        with(result.get()) {
-            memberName == "admin"
-            memberEmail == "admin@naver.com"
-            memberAge == 20
-            memberSex == "MALE"
-            memberAddress == "korea"
-            memberPhoneNumber == "010-1234-1234"
-            memberGrade == "GOLD"
-        }
-    }
-
-
 }
