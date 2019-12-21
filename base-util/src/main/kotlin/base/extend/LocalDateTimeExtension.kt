@@ -3,6 +3,12 @@ package base.extend
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
+fun String.repeat2(count: Int) {
+    for (cnt in 1..count) {
+        println(this)
+    }
+}
+
 fun LocalDateTime.today(): LocalDateTime {
     return LocalDateTime.now()
             .truncatedTo(ChronoUnit.DAYS)
