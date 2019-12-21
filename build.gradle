@@ -27,7 +27,6 @@ allprojects {
 bootJar {
 	mainClassName = 'base.BaseApplication'
 }
-
 subprojects {
 	group = 'com.study'
 	version = '0.0.1-SNAPSHOT'

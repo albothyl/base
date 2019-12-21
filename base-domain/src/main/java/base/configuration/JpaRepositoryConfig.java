@@ -12,4 +12,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackageClasses = { Domain.class, Jsr310JpaConverters.class })
 @EnableJpaRepositories(basePackageClasses = { Domain.class })
 public class JpaRepositoryConfig {
+
 }

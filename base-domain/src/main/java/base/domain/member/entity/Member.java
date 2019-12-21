@@ -42,5 +42,8 @@ public class Member extends CreatedAndModifiedEntity {
 	private Boolean accountNonLocked;
 	private Boolean credentialsNonExpired;
 	private Boolean enabled;
-}
 
+	public void changePassword(final String newPassword) {
+		memberPassword = newPassword;
+	}
+}
