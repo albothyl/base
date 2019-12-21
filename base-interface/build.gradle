@@ -1,5 +1,5 @@
 dependencies {
-    implementation (project(':base-domain'))
+    api (project(':base-domain'))
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'

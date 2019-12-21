@@ -13,7 +13,7 @@ spring:
 # local environment
 ---
 server:
-  port: 8081
+  port: 8080
 
 spring:
   profiles: local
