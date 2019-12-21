@@ -51,37 +51,38 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
+	// TODO: 17/12/2019 "/boards" "/boards/{seq}" delete
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
 			.authorizeRequests()
-				.antMatchers("/resources", "/signup", "/hello", "/public")
-					.permitAll()
-				.anyRequest()
-					.authenticated()
-				.and()
+			.antMatchers("/resources", "/signup", "/hello", "/public", "/boards", "/boards/{seq}", "/members/**")
+			.permitAll()
+			.anyRequest()
+			.authenticated()
+			.and()
 
 			.formLogin()
-				.permitAll()
-				.and()
+			.permitAll()
+			.and()
 
 			.logout()
-				.logoutUrl("/logout").logoutSuccessUrl("/login?loggedOut")
-				.invalidateHttpSession(true).deleteCookies("JSESSIONID")
-				.permitAll()
-				.and()
+			.logoutUrl("/logout").logoutSuccessUrl("/login?loggedOut")
+			.invalidateHttpSession(true).deleteCookies("JSESSIONID")
+			.permitAll()
+			.and()
 
 			.exceptionHandling()
-				.accessDeniedPage("/accessDenied")
-				.and()
+			.accessDeniedPage("/accessDenied")
+			.and()
 
 			.sessionManagement()
-				.sessionFixation().changeSessionId()
-				.maximumSessions(1).maxSessionsPreventsLogin(true)
-				.sessionRegistry(this.sessionRegistryImpl())
-				.and().and()
+			.sessionFixation().changeSessionId()
+			.maximumSessions(1).maxSessionsPreventsLogin(true)
+			.sessionRegistry(this.sessionRegistryImpl())
+			.and().and()
 
 			.csrf()
-				.disable()
+			.disable()
 
 			.rememberMe();
 	}

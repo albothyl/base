@@ -12,8 +12,13 @@ class MemberRepositoryTest extends Specification {
 	@Autowired
 	MemberRepository memberRepository
 
+	def setup() {
+		memberRepository.deleteAll()
+	}
+
 	def "member save test"() {
 		given:
+
 		def member = Member.builder()
 				.memberPassword("{bcrypt}\$2a\$10\$bX1r6QoadC9c/AMdORDVnuLW4d4e3bUQKZk0MMBhvj/wj2X6CKiJa")
 				.memberName("admin")

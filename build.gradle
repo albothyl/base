@@ -23,12 +23,12 @@ allprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'java-library'
 }
 
 bootJar {
 	mainClassName = 'base.BaseApplication'
 }
-
 subprojects {
 	group = 'com.study'
 	version = '0.0.1-SNAPSHOT'

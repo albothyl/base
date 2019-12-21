@@ -1,3 +1,10 @@
+plugins {
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+}
+
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
+apply from: 'querydsl.gradle'
 apply from: 'flyway.gradle'
 apply from: 'querydsl.gradle'
 
