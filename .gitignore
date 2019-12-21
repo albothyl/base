@@ -46,6 +46,7 @@ buildSrc/
 db-migration/
 contiperf-report/
 bin/
+*/src/generated/
 */src/main/generated/**
 .DS_Store
 node_modules/
