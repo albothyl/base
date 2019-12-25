@@ -9,8 +9,15 @@ import moment from 'moment'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+const base = axios.create({
+  baseURL: "http://localhost:8080",
+  headers: {
+    "Content-type": "application/json"
+  }
+});
+
 Vue.config.productionTip = false
-Vue.prototype.$http = axios
+Vue.prototype.$http = base
 Vue.use(BootstrapVue)
 Vue.prototype.moment = moment
 
