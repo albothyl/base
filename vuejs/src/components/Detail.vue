@@ -1,12 +1,42 @@
 <template>
     <div>
-        <div>순서 {{board.seq}}</div>
-        <div>제목 <b-form-input v-model="board.title"/></div>
-        <div>내용 <b-form-textarea v-model="board.content"/></div>
-        <div>
-            <button v-on:click="updateBoard">수정</button>
-            <button v-on:click="deleteBoard(board.seq)">삭제</button>
-        </div>
+
+        <b-container fluid>
+            <b-row>
+                <b-col md="8" offset-md="2">
+                    <b-row class="my-1">
+                        <b-col sm="2">
+                        <label for="input-none">순서 :</label>
+                        </b-col>
+                        <b-col sm="10">
+                            {{board.seq}}
+                        </b-col>
+                    </b-row>
+                    <b-row class="my-1">
+                        <b-col sm="2">
+                        <label for="input-none">제목 :</label>
+                        </b-col>
+                        <b-col sm="10">
+                            <b-form-input v-model="board.title"/>
+                        </b-col>
+                    </b-row>
+                    <b-row class="my-1">
+                        <b-col sm="2">
+                        <label for="input-none">내용 :</label>
+                        </b-col>
+                        <b-col sm="10">
+                            <b-form-textarea v-model="board.content"/>
+                        </b-col>
+                    </b-row>
+                    <b-row class="my-1">
+                        <b-col sm="12">
+                            <button v-on:click="updateBoard">수정</button>
+                            <button v-on:click="deleteBoard(board.seq)">삭제</button>
+                        </b-col>
+                    </b-row>
+                </b-col>
+            </b-row>
+        </b-container>
     </div>
 </template>
 <script>
@@ -23,7 +53,7 @@ export default {
     },
     created() {
         const seq = this.$route.params.seq
-        this.$http.get(`http://localhost:8080/boards/${seq}`).then((response) => {
+        this.$http.get(`/boards/${seq}`).then((response) => {
             console.log(response)
             this.board = response.data
         }).catch(error => {
@@ -33,7 +63,7 @@ export default {
     },
     methods: {
         updateBoard() {
-            this.$http.put('http://localhost:8080/boards',{
+            this.$http.put('/boards',{
                 seq: this.board.seq,
 			    title: this.board.title,
                 content: this.board.content
@@ -51,7 +81,7 @@ export default {
             })
         },
         deleteBoard(seq) {
-            this.$http.delete(`http://localhost:8080/boards/${seq}`).then((response) => {
+            this.$http.delete(`/boards/${seq}`).then((response) => {
                 console.log(response)
                 if(response.data === 'OK'){
                     alert('삭제 성공!')
