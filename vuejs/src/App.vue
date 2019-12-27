@@ -20,7 +20,6 @@
           <!-- login -->
           <div>
             <b-button id="show-btn" pill variant="primary" @click="$bvModal.show('bv-modal-login')">Login</b-button>
-
             <b-modal id="bv-modal-login" hide-footer>
               <template v-slot:modal-title>
                 Login
@@ -41,7 +40,6 @@
           <!-- register -->
           <div>
             <b-button id="show-btn" pill variant="outline-danger" @click="$bvModal.show('bv-modal-register')">Register</b-button>
-
             <b-modal id="bv-modal-register" hide-footer>
               <template v-slot:modal-title>
                 Register
