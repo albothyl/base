@@ -16,7 +16,8 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <!-- <b-nav-item href="/boards">login</b-nav-item> -->
-          
+          <b-nav-item href="#">token : {{token}}</b-nav-item>
+
           <!-- login -->
           <div>
             <b-button id="show-btn" pill variant="primary" @click="$bvModal.show('bv-modal-login')">Login</b-button>
@@ -26,10 +27,10 @@
               </template>
               <div class="d-block text-center">
                 <b-form-group>
-                  <b-form-input v-model="userid" placeholder="userid" />
+                  <b-form-input placeholder="userid" />
                 </b-form-group>
                 <b-form-group>
-                  <b-form-input v-model="password" placeholder="password" />
+                  <b-form-input placeholder="password" />
                 </b-form-group>
               </div>
               <b-button block variant="primary" @click="$bvModal.hide('bv-modal-login')">login</b-button>
@@ -46,10 +47,10 @@
               </template>
               <div class="d-block text-center">
                 <b-form-group>
-                  <b-form-input v-model="userid" placeholder="userid" />
+                  <b-form-input placeholder="userid" />
                 </b-form-group>
                 <b-form-group>
-                  <b-form-input v-model="password" placeholder="password" />
+                  <b-form-input placeholder="password" />
                 </b-form-group>
               </div>
               <b-button block variant="danger" @click="$bvModal.hide('bv-modal-register')">register</b-button>
@@ -68,7 +69,10 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    token() { return this.$store.getters.token}
+  }
 }
 </script>
 
