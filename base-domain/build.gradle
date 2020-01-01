@@ -1,5 +1,6 @@
 apply from: 'querydsl.gradle'
 apply from: 'flyway.gradle'
+apply from: 'criteria.gradle'
 
 bootJar {
     enabled = false
@@ -19,5 +20,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.199'
 
+    compileOnly group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.0.Final'
+    annotationProcessor group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.0.Final'
 
 }
