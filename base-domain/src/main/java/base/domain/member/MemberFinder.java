@@ -1,6 +1,7 @@
 package base.domain.member;
 
 import base.domain.member.entity.Member;
+import base.domain.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

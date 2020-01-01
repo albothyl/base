@@ -1,7 +1,8 @@
-package base.domain.member;
+package base.domain.member.repository;
+
+import static base.domain.member.entity.QMember.member;
 
 import base.domain.member.entity.Member;
-import static base.domain.member.entity.QMember.member;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

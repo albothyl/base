@@ -1,6 +1,6 @@
 package base.domain.post;
 
-import base.domain.member.MemberRepository;
+import base.domain.member.repository.MemberRepository;
 import base.domain.member.entity.Member;
 import base.domain.post.constants.BoardType;
 import base.domain.post.entity.Comment;
