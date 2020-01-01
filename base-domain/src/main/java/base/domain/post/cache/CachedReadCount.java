@@ -1,6 +1,5 @@
 package base.domain.post.cache;
 
-import base.domain.post.entity.Post;
 import lombok.*;
 
 @Getter
@@ -8,8 +7,11 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CachedPost {
+public class CachedReadCount {
     private String key;
-    public long count;
-    private Post post;
+    private long count;
+
+    public void increaseCount(){
+        this.count += 1;
+    }
 }
