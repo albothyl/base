@@ -1,6 +1,6 @@
 package base.interfaces.post;
 
-import base.application.post.CachedPostProvider;
+import base.application.post.CachedReadCountProvider;
 import base.domain.member.MemberRepository;
 import base.domain.member.entity.Member;
 import base.domain.post.CommentRepository;
@@ -39,7 +39,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     private CommentRepository commentRepository;
 
     @Autowired
-    private CachedPostProvider cachedPostProvider;
+    private CachedReadCountProvider cachedReadCountProvider;
 
     private Member savedMember;
 
@@ -165,9 +165,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     @Test
     @WithMockUser
     @DisplayName("조회수 캐쉬 테스트")
-    @Transactional
     public void updateCacheTest() throws Exception {
-        long cacheUpdateCount = cachedPostProvider.max_read_count;
         //given
         Post post = Post.builder()
                 .member(savedMember)
@@ -177,23 +175,22 @@ public class PostControllerTests extends BaseTestControllerSupport {
                 .build();
 
         Post savedPost = postRepository.save(post);
-
-        String url = "/posts/" + savedPost.getPostId();
+        long postId = savedPost.getPostId();
+        String url = "/posts/" + postId;
 
         //when, then
-        for(int i=0; i<cacheUpdateCount; i++){
+        for(int i=0; i<100; i++){
             mockMvc.perform(get(url)
-                    .param("page", "0")
-                    .param("size", "5")
-                    .param("sort", "postId")
                     .contentType(JSON_UTF8_MEDIA_TYPE)
                     .accept(JSON_UTF8_MEDIA_TYPE))
                     .andExpect(status().isOk());
         }
 
-        Optional<Post> optionalPost = postRepository.findById(savedPost.getPostId());
-        assertThat(optionalPost).isPresent();
-        assertThat(optionalPost.get().getReadCount()).isEqualTo(cacheUpdateCount);
+        Optional<Post> getPost = postRepository.findById(postId);
+
+        assertThat(cachedReadCountProvider.get(postId)).isPresent();
+        assertThat(cachedReadCountProvider.get(postId).get().getCount()).isEqualTo(100);
+        assertThat(getPost.get().getReadCount()).isEqualTo(100);
     }
 }
 
