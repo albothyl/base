@@ -1,9 +1,8 @@
 package base.domain.member;
 
 import base.domain.member.entity.Member;
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MemberFinder {
