@@ -3,6 +3,7 @@ package base.application.member;
 import base.application.member.exception.MemberPasswordEqualException;
 import base.domain.member.MemberRepository;
 import base.domain.member.entity.Member;
+import base.support.PasswordChanger;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberChanger implements PasswordManager {
+public class MemberInfoChanger implements PasswordChanger {
 
     private final MemberRepository memberRepository;
 

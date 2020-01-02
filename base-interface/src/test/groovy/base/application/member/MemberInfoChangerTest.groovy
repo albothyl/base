@@ -10,10 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 @SpringBootTest
-class MemberChangerTest extends Specification {
+class MemberInfoChangerTest extends Specification {
 
     @Autowired
-    MemberChanger memberChanger
+    MemberInfoChanger memberChanger
 
     @Autowired
     MemberRepository memberRepository
