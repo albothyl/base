@@ -1,7 +1,27 @@
 <template>
     <div>
-        <b-form-input v-model="title" placeholder="제목" />
-        <b-form-textarea v-model="content" placeholder="내용" />
+        <b-container fluid>
+            <b-row>
+                <b-col md="8" offset-md="2">
+                    <b-row class="my-1">
+                        <b-col sm="2">
+                        <label for="input-none">제목 :</label>
+                        </b-col>
+                        <b-col sm="10">
+                        <b-form-input v-model="title" />
+                        </b-col>
+                    </b-row>
+                    <b-row class="my-1">
+                        <b-col sm="2">
+                        <label for="input-none">내용 :</label>
+                        </b-col>
+                        <b-col sm="10">
+                        <b-form-textarea v-model="content" />
+                        </b-col>
+                    </b-row>
+                </b-col>
+            </b-row>
+        </b-container>
         <button v-on:click="write">작성</button>
     </div>
 </template>
@@ -17,7 +37,7 @@ export default {
     methods: {
         write() {
             
-            this.$http.post('http://localhost:8080/boards',{
+            this.$http.post('/boards',{
 			    title:this.title,
                 content:this.content
 		    }).then((response) => {
