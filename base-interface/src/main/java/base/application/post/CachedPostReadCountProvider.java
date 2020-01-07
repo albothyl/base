@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
@@ -21,6 +22,7 @@ public class CachedPostReadCountProvider {
 
     private static final long MAX_CACHE_SIZE = 1000000;
     private static final long MAX_READ_COUNT = 100;
+    private static final long EXPIRE_DURATION = 10;
 
     private static final String NAMESPACE = "posts";
     private static final String VERSION = "v1";
@@ -30,6 +32,7 @@ public class CachedPostReadCountProvider {
     {
         loadingCache = CacheBuilder.newBuilder()
                 .maximumSize(MAX_CACHE_SIZE)
+                .expireAfterAccess(EXPIRE_DURATION, TimeUnit.MINUTES)
                 .build(new CacheLoader<Long, CachedPostReadCount>() {
                            @Override
                            public CachedPostReadCount load(Long id) throws Exception {
