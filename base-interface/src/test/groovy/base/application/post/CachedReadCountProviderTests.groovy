@@ -10,17 +10,12 @@ import spock.lang.Specification
 @ExtendWith(MockitoExtension.class)
 class CachedReadCountProviderTests extends Specification {
 
-    private CachedPostReadCountProvider cachedReadCountProvider;
-    private PostRepository postRepository;
-
-    def setup(){
-        postRepository = Stub(PostRepository)
-        cachedReadCountProvider = new CachedPostReadCountProvider(postRepository)
-    }
+    private PostRepository postRepository = Stub(PostRepository)
+    private CachedPostReadCountProvider cachedReadCountProvider = new CachedPostReadCountProvider(postRepository)
 
     def "cache get 테스트"() {
         given:
-        Long postId = 1l
+        def postId = 1
         Post post = Post.builder()
                 .postId(postId)
                 .build()
@@ -30,6 +25,8 @@ class CachedReadCountProviderTests extends Specification {
 
         then:
         postRepository.findById(postId) >> Optional.ofNullable(post)
+
+        and:
         cachedReadCount.isPresent()
         cachedReadCount.get().getCount() == 0
     }
@@ -37,7 +34,7 @@ class CachedReadCountProviderTests extends Specification {
 
     def "cache isMaxReadCount 테스트"() {
         given:
-        Long postId = 1l
+        def postId = 1
         Post post = Post.builder()
                 .postId(postId)
                 .build()
@@ -50,10 +47,13 @@ class CachedReadCountProviderTests extends Specification {
             cachedReadCount.get().increaseCount()
         }
 
-        boolean secondGetIsMax = cachedReadCountProvider.isMaxReadCount(postId)
+        def count = cachedReadCountProvider.get(postId).get().getCount()
+        boolean secondGetIsMax = cachedReadCountProvider.isMaxReadCount(count)
 
         then:
         postRepository.findById(postId) >> Optional.ofNullable(post)
+
+        and:
         firstGetIsMax == false
         secondGetIsMax == true
     }
@@ -74,6 +74,8 @@ class CachedReadCountProviderTests extends Specification {
 
         then:
         postRepository.findById(postId) >> Optional.ofNullable(post)
+
+        and:
         cachedReadCount.get().getCount() == 1
         cachedReadCount2.get().getCount() == 0
     }
@@ -91,6 +93,8 @@ class CachedReadCountProviderTests extends Specification {
 
         then:
         postRepository.findById(postId) >> Optional.ofNullable(post)
+
+        and:
         cachedReadCountProvider.size == 0
     }
 }

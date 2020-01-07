@@ -2,6 +2,8 @@ package base.domain.post.cache;
 
 import lombok.*;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 @Getter
 @Builder
 @ToString
@@ -9,9 +11,13 @@ import lombok.*;
 @AllArgsConstructor
 public class CachedPostReadCount {
     private String key;
-    private long count;
+    private AtomicLong count;
 
-    public void increaseCount(){
-        this.count += 1;
+    public Long increaseCount(){
+        return count.incrementAndGet();
+    }
+
+    public Long getCount(){
+        return count.get();
     }
 }

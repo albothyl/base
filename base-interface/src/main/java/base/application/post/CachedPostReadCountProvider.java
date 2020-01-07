@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
 @Service
@@ -34,7 +35,7 @@ public class CachedPostReadCountProvider {
                            public CachedPostReadCount load(Long id) throws Exception {
                                return postRepository.findById(id)
                                        .map(post -> CachedPostReadCount.builder()
-                                               .count(post.getReadCount())
+                                               .count(new AtomicLong(post.getReadCount()))
                                                .key(getKey(id))
                                                .build())
                                        .orElse(null);
@@ -49,9 +50,8 @@ public class CachedPostReadCountProvider {
         return cachedReadCount;
     }
 
-    public boolean isMaxReadCount(Long postId) {
-        Optional<CachedPostReadCount> cachedReadCount = get(postId);
-        return cachedReadCount.isPresent() ? cachedReadCount.get().getCount() == MAX_READ_COUNT : false;
+    public boolean isMaxReadCount(Long readCount) {
+        return MAX_READ_COUNT <= readCount;
     }
 
     public void remove(Long postId) {

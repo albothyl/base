@@ -34,10 +34,10 @@ public class PostController {
         Post post = postManager.findByPostIdWithComments(postId);
 
         Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId);
-        cachedReadCount.get().increaseCount();
+        long count = cachedReadCount.get().increaseCount();
 
-        if(cachedReadCountProvider.isMaxReadCount(postId)){
-            postManager.updateReadCount(postId, cachedReadCount.get().getCount());
+        if(cachedReadCountProvider.isMaxReadCount(count)){
+            postManager.updateReadCount(postId, count);
             cachedReadCountProvider.refresh(postId);
         }
         return post;
