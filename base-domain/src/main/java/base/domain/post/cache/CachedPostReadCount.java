@@ -7,7 +7,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CachedReadCount {
+public class CachedPostReadCount {
     private String key;
     private long count;
 

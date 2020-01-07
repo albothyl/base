@@ -1,7 +1,7 @@
 package base.application.post
 
 import base.domain.post.PostRepository
-import base.domain.post.cache.CachedReadCount
+import base.domain.post.cache.CachedPostReadCount
 import base.domain.post.entity.Post
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
@@ -10,12 +10,12 @@ import spock.lang.Specification
 @ExtendWith(MockitoExtension.class)
 class CachedReadCountProviderTests extends Specification {
 
-    private CachedReadCountProvider cachedReadCountProvider;
+    private CachedPostReadCountProvider cachedReadCountProvider;
     private PostRepository postRepository;
 
     def setup(){
         postRepository = Stub(PostRepository)
-        cachedReadCountProvider = new CachedReadCountProvider(postRepository)
+        cachedReadCountProvider = new CachedPostReadCountProvider(postRepository)
     }
 
     def "cache get 테스트"() {
@@ -26,7 +26,7 @@ class CachedReadCountProviderTests extends Specification {
                 .build()
 
         when:
-        Optional<CachedReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
+        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
 
         then:
         postRepository.findById(postId) >> Optional.ofNullable(post)
@@ -44,7 +44,7 @@ class CachedReadCountProviderTests extends Specification {
 
         when:
         boolean firstGetIsMax = cachedReadCountProvider.isMaxReadCount(postId)
-        Optional<CachedReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
+        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
 
         (1..100).each {
             cachedReadCount.get().increaseCount()
@@ -66,10 +66,10 @@ class CachedReadCountProviderTests extends Specification {
                 .build()
 
         when:
-        Optional<CachedReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
+        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
         cachedReadCount.get().increaseCount()
         cachedReadCountProvider.refresh(postId)
-        Optional<CachedReadCount> cachedReadCount2 = cachedReadCountProvider.get(postId)
+        Optional<CachedPostReadCount> cachedReadCount2 = cachedReadCountProvider.get(postId)
 
 
         then:

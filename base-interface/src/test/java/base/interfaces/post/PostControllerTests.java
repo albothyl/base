@@ -1,6 +1,6 @@
 package base.interfaces.post;
 
-import base.application.post.CachedReadCountProvider;
+import base.application.post.CachedPostReadCountProvider;
 import base.domain.member.MemberRepository;
 import base.domain.member.entity.Member;
 import base.domain.post.CommentRepository;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.NumberUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -39,7 +38,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     private CommentRepository commentRepository;
 
     @Autowired
-    private CachedReadCountProvider cachedReadCountProvider;
+    private CachedPostReadCountProvider cachedReadCountProvider;
 
     private Member savedMember;
 

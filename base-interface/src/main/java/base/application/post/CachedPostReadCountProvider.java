@@ -1,7 +1,7 @@
 package base.application.post;
 
 import base.domain.post.PostRepository;
-import base.domain.post.cache.CachedReadCount;
+import base.domain.post.cache.CachedPostReadCount;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CachedReadCountProvider {
+public class CachedPostReadCountProvider {
 
     private final PostRepository postRepository;
 
@@ -24,16 +24,16 @@ public class CachedReadCountProvider {
     private static final String NAMESPACE = "posts";
     private static final String VERSION = "v1";
 
-    private LoadingCache<Long, CachedReadCount> loadingCache;
+    private LoadingCache<Long, CachedPostReadCount> loadingCache;
 
     {
         loadingCache = CacheBuilder.newBuilder()
                 .maximumSize(MAX_CACHE_SIZE)
-                .build(new CacheLoader<Long, CachedReadCount>() {
+                .build(new CacheLoader<Long, CachedPostReadCount>() {
                            @Override
-                           public CachedReadCount load(Long id) throws Exception {
+                           public CachedPostReadCount load(Long id) throws Exception {
                                return postRepository.findById(id)
-                                       .map(post -> CachedReadCount.builder()
+                                       .map(post -> CachedPostReadCount.builder()
                                                .count(post.getReadCount())
                                                .key(getKey(id))
                                                .build())
@@ -43,14 +43,14 @@ public class CachedReadCountProvider {
                 );
     }
 
-    public Optional<CachedReadCount> get(Long postId) {
-        Optional<CachedReadCount> cachedReadCount = Optional.ofNullable(loadingCache.getUnchecked(postId));
+    public Optional<CachedPostReadCount> get(Long postId) {
+        Optional<CachedPostReadCount> cachedReadCount = Optional.ofNullable(loadingCache.getUnchecked(postId));
         log.info("Cache {}: {} => {}", (cachedReadCount.isPresent()) ? "hit" : "miss", getKey(postId), cachedReadCount.get());
         return cachedReadCount;
     }
 
     public boolean isMaxReadCount(Long postId) {
-        Optional<CachedReadCount> cachedReadCount = get(postId);
+        Optional<CachedPostReadCount> cachedReadCount = get(postId);
         return cachedReadCount.isPresent() ? cachedReadCount.get().getCount() == MAX_READ_COUNT : false;
     }
 

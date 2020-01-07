@@ -1,8 +1,8 @@
 package base.interfaces.post;
 
-import base.application.post.CachedReadCountProvider;
+import base.application.post.CachedPostReadCountProvider;
 import base.application.post.PostManager;
-import base.domain.post.cache.CachedReadCount;
+import base.domain.post.cache.CachedPostReadCount;
 import base.domain.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class PostController {
 
     private final PostManager postManager;
-    private final CachedReadCountProvider cachedReadCountProvider;
+    private final CachedPostReadCountProvider cachedReadCountProvider;
 
     @GetMapping
     public Page<Post> findAllPosts(
@@ -33,7 +33,7 @@ public class PostController {
     public Post findPost(@PathVariable Long postId) {
         Post post = postManager.findByPostIdWithComments(postId);
 
-        Optional<CachedReadCount> cachedReadCount = cachedReadCountProvider.get(postId);
+        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId);
         cachedReadCount.get().increaseCount();
 
         if(cachedReadCountProvider.isMaxReadCount(postId)){
