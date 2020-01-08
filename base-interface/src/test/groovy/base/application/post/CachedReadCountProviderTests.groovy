@@ -10,7 +10,7 @@ import spock.lang.Specification
 @ExtendWith(MockitoExtension.class)
 class CachedReadCountProviderTests extends Specification {
 
-    private PostRepository postRepository = Stub(PostRepository)
+    private PostRepository postRepository = Mock(PostRepository)
     private CachedPostReadCountProvider cachedReadCountProvider = new CachedPostReadCountProvider(postRepository)
 
     def "cache get 테스트"() {
@@ -24,7 +24,7 @@ class CachedReadCountProviderTests extends Specification {
         Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
 
         then:
-        postRepository.findById(postId) >> Optional.ofNullable(post)
+        1 * postRepository.findById(postId) >> Optional.ofNullable(post)
 
         and:
         cachedReadCount.isPresent()
@@ -51,7 +51,7 @@ class CachedReadCountProviderTests extends Specification {
         boolean secondGetIsMax = cachedReadCountProvider.isMaxReadCount(count)
 
         then:
-        postRepository.findById(postId) >> Optional.ofNullable(post)
+        1 * postRepository.findById(postId) >> Optional.ofNullable(post)
 
         and:
         firstGetIsMax == false
@@ -73,7 +73,7 @@ class CachedReadCountProviderTests extends Specification {
 
 
         then:
-        postRepository.findById(postId) >> Optional.ofNullable(post)
+        2 * postRepository.findById(postId) >> Optional.ofNullable(post)
 
         and:
         cachedReadCount.get().getCount() == 1
@@ -92,7 +92,7 @@ class CachedReadCountProviderTests extends Specification {
         cachedReadCountProvider.remove(postId)
 
         then:
-        postRepository.findById(postId) >> Optional.ofNullable(post)
+        1 * postRepository.findById(postId) >> Optional.ofNullable(post)
 
         and:
         cachedReadCountProvider.size == 0
