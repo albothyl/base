@@ -5,11 +5,13 @@ import base.domain.post.cache.CachedPostReadCount;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -51,6 +53,13 @@ public class CachedPostReadCountProvider {
         Optional<CachedPostReadCount> cachedReadCount = Optional.ofNullable(loadingCache.getUnchecked(postId));
         log.info("Cache {}: {} => {}", (cachedReadCount.isPresent()) ? "hit" : "miss", getKey(postId), cachedReadCount.get());
         return cachedReadCount;
+    }
+    public ImmutableMap<Long,CachedPostReadCount> getAll() {
+        try {
+            return loadingCache.getAll(loadingCache.asMap().keySet());
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean isMaxReadCount(Long readCount) {
