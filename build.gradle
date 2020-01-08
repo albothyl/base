@@ -37,8 +37,8 @@ subprojects {
 	dependencies {
 		implementation 'org.springframework.boot:spring-boot-starter'
 
-		compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
-		compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+		api group: 'com.google.guava', name: 'guava', version: '28.1-jre'
+		api group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
 		compileOnly 'org.projectlombok:lombok'
 
