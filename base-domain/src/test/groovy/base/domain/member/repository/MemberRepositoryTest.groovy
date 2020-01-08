@@ -1,6 +1,7 @@
-package base.domain.member
+package base.domain.member.repository
 
 import base.domain.member.entity.Member
+import base.domain.member.repository.MemberRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -10,7 +11,7 @@ import spock.lang.Specification
 class MemberRepositoryTest extends Specification {
 
 	@Autowired
-	MemberRepository memberRepository
+    MemberRepository memberRepository
 
 	def setup() {
 		memberRepository.deleteAll()

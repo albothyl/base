@@ -1,4 +1,4 @@
-package base.domain.member;
+package base.domain.member.repository;
 
 import static base.domain.member.entity.QMember.member;
 
@@ -8,8 +8,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class MemberRepositoryImpl implements MemberRepositoryCustom
-{
+public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
   private final JPAQueryFactory jpaQueryFactory;
 

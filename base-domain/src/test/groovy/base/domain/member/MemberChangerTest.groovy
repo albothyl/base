@@ -1,7 +1,7 @@
-package base.application.member
+package base.domain.member
 
-import base.application.member.exception.MemberPasswordEqualException
-import base.domain.member.MemberRepository
+import base.domain.member.MemberChanger
+import base.domain.member.repository.MemberRepository
 import base.domain.member.entity.Member
 import io.github.benas.randombeans.EnhancedRandomBuilder
 import io.github.benas.randombeans.api.EnhancedRandom
@@ -10,10 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 @SpringBootTest
-class MemberInfoChangerTest extends Specification {
+class MemberChangerTest extends Specification {
 
     @Autowired
-    MemberInfoChanger memberChanger
+    MemberChanger memberChanger
 
     @Autowired
     MemberRepository memberRepository

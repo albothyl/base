@@ -1,4 +1,4 @@
-package base.domain.member;
+package base.domain.member.repository;
 
 import base.domain.member.entity.Member;
 import base.domain.member.entity.Member_;

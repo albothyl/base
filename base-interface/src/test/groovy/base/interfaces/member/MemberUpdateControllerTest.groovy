@@ -1,6 +1,6 @@
 package base.interfaces.member
 
-import base.domain.member.MemberRepository
+import base.domain.member.repository.MemberRepository
 import base.domain.member.entity.Member
 import base.support.PasswordEncoderUtils
 import com.fasterxml.jackson.databind.ObjectMapper
