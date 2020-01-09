@@ -1,8 +1,8 @@
 package base.interfaces.post;
 
 import base.application.post.CachedPostReadCountProvider;
+import base.application.post.CachedPostReadCountUpdater;
 import base.application.post.PostManager;
-import base.domain.post.cache.CachedPostReadCount;
 import base.domain.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping(value = "/posts")
 @RequiredArgsConstructor
@@ -21,25 +19,18 @@ public class PostController {
 
     private final PostManager postManager;
     private final CachedPostReadCountProvider cachedReadCountProvider;
+    private final CachedPostReadCountUpdater cachedPostReadCountUpdater;
 
     @GetMapping
     public Page<Post> findAllPosts(
             @PageableDefault(sort = {"postId"}, page = 10, size = 10) Pageable pageable) {
-        Page<Post> posts = postManager.findAllPosts(pageable);
-        return posts;
+        return postManager.findAllPosts(pageable);
     }
 
     @GetMapping(path = "/{postId}")
     public Post findPost(@PathVariable Long postId) {
         Post post = postManager.findByPostIdWithComments(postId);
-
-        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId);
-        long count = cachedReadCount.get().increaseCount();
-
-        if(cachedReadCountProvider.isMaxReadCount(count)){
-            postManager.updateReadCount(postId, count);
-            cachedReadCountProvider.refresh(postId);
-        }
+        cachedPostReadCountUpdater.update(postId);
         return post;
     }
 
