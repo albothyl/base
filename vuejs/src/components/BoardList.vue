@@ -61,6 +61,9 @@ export default {
                             page: this.page-1,
                             size: this.size,
                             sort: this.sort
+                        },
+                        headers: {
+                            Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
                         }
         }).then((response) => {
             console.log(response)
@@ -93,6 +96,9 @@ export default {
                             page: requestPage-1,
                             size: this.size,
                             sort: this.sort
+                        },
+                        headers: {
+                            Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
                         }
             }).then((response) => {
                 console.log(response)
