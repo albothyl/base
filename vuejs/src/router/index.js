@@ -13,22 +13,34 @@ export default new Router({
     {
       path: '/',
       name: 'HelloWorld',
-      component: HelloWorld
+      component: HelloWorld,
+      meta: {
+        loginRequired: false
+      }
     },
     {
       path: '/boards',
       name: 'BoardList',
-      component: BoardList
+      component: BoardList,
+      meta: {
+        loginRequired: true
+      }
     },
     {
       path: '/insertBoard',
       name: 'WriteBoard',
-      component: WriteBoard
+      component: WriteBoard,
+      meta: {
+        loginRequired: true
+      }
     },
     {
       path: '/detail/:seq',
       name: 'Detail',
-      component: Detail
+      component: Detail,
+      meta: {
+        loginRequired: true
+      }
     }
   ]
 })
