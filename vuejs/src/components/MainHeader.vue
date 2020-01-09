@@ -69,23 +69,27 @@
     </div>
 </template>
 <script>
+import router from '../router'
+import store from '../store.js'
 
-/*
 router.beforeEach((to, from, next) => {
   // to : 이동할 url
   // from : 현재 url
   // next : to에서 지정한 url로 이동하기 위해 꼭 호출해야 하는 함수
-  console.log('beforeEach')
   if (to.matched.some((routeInfo) => {
     return routeInfo.meta.loginRequired;
   })) {
-    alert('Login Please!');
+    if(!store.getters.token?true:false) {
+        alert('Login Please!');
+        router.push('/')
+    } else {
+        next()
+    }
   } else {
     next()
   }
 
 })
-*/
 
 export default {
     name: 'main-header',
@@ -119,8 +123,7 @@ export default {
 
                     // 로그인. vuex store 에 token 저장
                     this.$store.dispatch('doLogin', response.data.accessToken)
-                    // this.$router.push('/')
-                    // this.$router.push({ name: 'HelloWorld' }).catch(err => {})
+
                     this.$router.go(this.$router.currentRoute)
                 } else {
                     alert('로그인 실패! ')
