@@ -10,13 +10,13 @@ import spock.lang.Specification
 @ExtendWith(MockitoExtension.class)
 class CachedReadCountProviderTests extends Specification {
 
-    private PostRepository postRepository = Mock(PostRepository)
-    private CachedPostReadCountProvider cachedReadCountProvider = new CachedPostReadCountProvider(postRepository)
+    def postRepository = Mock(PostRepository)
+    def cachedReadCountProvider = new CachedPostReadCountProvider(postRepository)
 
     def "cache get 테스트"() {
         given:
         def postId = 1
-        Post post = Post.builder()
+        def post = Post.builder()
                 .postId(postId)
                 .build()
 
@@ -35,7 +35,7 @@ class CachedReadCountProviderTests extends Specification {
     def "cache isMaxReadCount 테스트"() {
         given:
         def postId = 1
-        Post post = Post.builder()
+        def post = Post.builder()
                 .postId(postId)
                 .build()
 
@@ -60,8 +60,8 @@ class CachedReadCountProviderTests extends Specification {
 
     def "cache refresh 테스트"() {
         given:
-        Long postId = 1l
-        Post post = Post.builder()
+        def postId = 1l
+        def post = Post.builder()
                 .postId(postId)
                 .build()
 
@@ -82,8 +82,8 @@ class CachedReadCountProviderTests extends Specification {
 
     def "cache remove 테스트"() {
         given:
-        Long postId = 1l
-        Post post = Post.builder()
+        def postId = 1l
+        def post = Post.builder()
                 .postId(postId)
                 .build()
 

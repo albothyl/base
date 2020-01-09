@@ -14,8 +14,8 @@ import java.util.concurrent.Executors
 @ExtendWith(MockitoExtension.class)
 class CachedReadCountThreadTests extends Specification {
 
-    private PostRepository postRepository = Stub(PostRepository)
-    private CachedPostReadCountProvider cachedReadCountProvider = new CachedPostReadCountProvider(postRepository)
+    def postRepository = Stub(PostRepository)
+    def cachedReadCountProvider = new CachedPostReadCountProvider(postRepository)
 
 
     def "thread safe test"() {
@@ -25,7 +25,7 @@ class CachedReadCountThreadTests extends Specification {
         def postId = 1
         CountDownLatch latch = new CountDownLatch(loop)
         Executor executor = Executors.newFixedThreadPool(threadCount)
-        Post post = Post.builder()
+        def post = Post.builder()
                 .postId(postId)
                 .build()
 

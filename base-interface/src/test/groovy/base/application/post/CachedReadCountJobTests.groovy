@@ -12,19 +12,19 @@ import java.util.concurrent.atomic.AtomicLong
 @ExtendWith(MockitoExtension.class)
 class CachedReadCountJobTests extends Specification {
 
-    PostManager postManager = Mock(PostManager)
-    CachedPostReadCountProvider cachedReadCountProvider = Mock(CachedPostReadCountProvider)
-    CachedPostReadCountUpdateJob job = new CachedPostReadCountUpdateJob(postManager, cachedReadCountProvider)
-    JobExecutionContext jobExecutionContext = Stub(JobExecutionContext)
+    def postManager = Mock(PostManager)
+    def cachedReadCountProvider = Mock(CachedPostReadCountProvider)
+    def job = new CachedPostReadCountUpdateJob(postManager, cachedReadCountProvider)
+    def jobExecutionContext = Stub(JobExecutionContext)
 
     def "execute job test"() {
         given:
         def postId = 1l
         def readCount = 100
-        CachedPostReadCount cache = CachedPostReadCount.builder()
+        def cache = CachedPostReadCount.builder()
                 .count(new AtomicLong(readCount))
                 .build()
-        Map<Long, CachedPostReadCount> map = ImmutableMap.builder()
+        def map = ImmutableMap.builder()
                 .put(postId, cache)
                 .build()
 
@@ -33,7 +33,6 @@ class CachedReadCountJobTests extends Specification {
 
         then:
         1 * cachedReadCountProvider.getAll() >> map
-        1 * cachedReadCountProvider.isMaxReadCount(readCount) >> true
         1 * postManager.updateReadCount(postId, readCount)
     }
 }
