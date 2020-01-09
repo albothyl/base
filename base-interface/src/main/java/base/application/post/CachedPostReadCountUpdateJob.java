@@ -22,13 +22,21 @@ public class CachedPostReadCountUpdateJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         Map<Long, CachedPostReadCount> map = provider.getAll();
         map.entrySet().stream()
-                .filter(entry -> provider.isMaxReadCount(entry.getValue().getCount()))
-                .forEach(entry -> {
-                    long postId = entry.getKey();
-                    long readCount = entry.getValue().getCount();
-                    postManager.updateReadCount(postId, readCount);
-                });
+                .filter(this::moreThanZeroCount)
+                .forEach(this::updateReadCount);
 
         log.info("cached post readCount scheduler update all <{}>", map.size());
+    }
+
+    private boolean moreThanZeroCount(Map.Entry<Long, CachedPostReadCount> entry){
+        return entry.getValue().getCount() > 0;
+    }
+
+    private void updateReadCount(Map.Entry<Long, CachedPostReadCount> entry){
+        try{
+            postManager.updateReadCount(entry.getKey(), entry.getValue().getCount());
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 }
