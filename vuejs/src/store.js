@@ -10,7 +10,8 @@ const store = new Vuex.Store({
     getters: {
         // token 을 사용하는 게터
         // token(state) {return state.token}
-        token(state) {return localStorage.accessToken}
+        token(state) {return localStorage.accessToken},
+        logined(state) {return localStorage.accessToken?true:false}
     },
     mutations: {
         // token 을 셋팅하는 뮤테이션

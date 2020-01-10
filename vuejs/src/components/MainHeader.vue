@@ -70,6 +70,7 @@
 </template>
 <script>
 import router from '../router'
+import { mapGetters } from 'vuex'
 import store from '../store.js'
 
 router.beforeEach((to, from, next) => {
@@ -107,8 +108,13 @@ export default {
         }
     },
     computed: {
-        token() { return this.$store.getters.token },
-        logined() { return  this.$store.getters.token?true:false }
+        //token() { return this.$store.getters.token },
+        //logined() { return  this.$store.getters.token?true:false },
+
+        ...mapGetters([
+            'token',
+            'logined'
+        ])
     },
     methods: {
         signin() {
@@ -123,6 +129,7 @@ export default {
 
                     // 로그인. vuex store 에 token 저장
                     this.$store.dispatch('doLogin', response.data.accessToken)
+                    // axios.defaults.headers.common['Authorization']
 
                     this.$router.go(this.$router.currentRoute)
                 } else {
