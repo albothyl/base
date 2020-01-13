@@ -36,6 +36,7 @@
 
             <!-- logout -->
             <div v-if="logined == true">
+                <strong class="text-primary">{{loginedUsername}}님, 환영합니다.</strong>
                 <b-button pill @click="onClickLogout">Logout</b-button>
             </div>
 
@@ -113,7 +114,8 @@ export default {
 
         ...mapGetters([
             'token',
-            'logined'
+            'logined',
+            'loginedUsername'
         ])
     },
     methods: {
@@ -128,7 +130,7 @@ export default {
                     console.log(response.data)
 
                     // 로그인. vuex store 에 token 저장
-                    this.$store.dispatch('doLogin', response.data.accessToken)
+                    this.$store.dispatch('doLogin', response.data)
                     // axios.defaults.headers.common['Authorization']
 
                     this.$router.go(this.$router.currentRoute)
