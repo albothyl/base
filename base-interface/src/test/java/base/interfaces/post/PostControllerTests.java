@@ -185,11 +185,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
                     .andExpect(status().isOk());
         }
 
-        Optional<Post> getPost = postRepository.findById(postId);
-
-        assertThat(cachedReadCountProvider.get(postId)).isPresent();
         assertThat(cachedReadCountProvider.get(postId).get().getCount()).isEqualTo(100);
-        assertThat(getPost.get().getReadCount()).isEqualTo(100);
     }
 }
 

@@ -17,22 +17,25 @@ class CachedReadCountJobTests extends Specification {
     def job = new CachedPostReadCountUpdateJob(postManager, cachedReadCountProvider)
     def jobExecutionContext = Stub(JobExecutionContext)
 
-    def "execute job test"() {
+    def "execute job 호출 시 updateReadCount  검증 테스트"() {
         given:
         def postId = 1l
         def readCount = 100
-        def cache = CachedPostReadCount.builder()
-                .count(new AtomicLong(readCount))
-                .build()
+        def cache = new CachedPostReadCount("")
+
         def map = ImmutableMap.builder()
                 .put(postId, cache)
                 .build()
 
         when:
+        (1..readCount).each {
+            cache.increaseCount()
+        }
         job.execute(jobExecutionContext)
 
         then:
         1 * cachedReadCountProvider.getAll() >> map
         1 * postManager.updateReadCount(postId, readCount)
+        1 * cachedReadCountProvider.invalidateAll()
     }
 }
