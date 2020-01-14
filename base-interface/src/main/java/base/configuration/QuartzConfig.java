@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +28,10 @@ public class QuartzConfig {
 
     private SchedulerFactory schedulerFactory;
     private Scheduler scheduler;
-    private final String pattern_property_name = "scheduler.update.pattern";
     private final String fileName = "/quartz.properties";
+
+    @Value("${scheduler.update.pattern}")
+    private String pattern_property;
 
     @Bean
     public Properties quartzProperties() throws IOException {
@@ -67,13 +70,12 @@ public class QuartzConfig {
         JobDetail job = newJob(CachedPostReadCountUpdateJob.class)
                 .build();
 
-        String pattern = quartzProperties().getProperty(pattern_property_name);
         Trigger trigger = newTrigger()
                 .startNow()
 //              .withSchedule(SimpleScheduleBuilder.simpleSchedule()
 //              .withIntervalInSeconds(5)
 //              .repeatForever())
-                .withSchedule(CronScheduleBuilder.cronSchedule(pattern).withMisfireHandlingInstructionDoNothing())
+                .withSchedule(CronScheduleBuilder.cronSchedule(pattern_property).withMisfireHandlingInstructionDoNothing())
                 .build();
 
         scheduler.scheduleJob(job, trigger);
