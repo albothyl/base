@@ -11,18 +11,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CachedPostReadCountUpdater {
     private final CachedPostReadCountProvider cachedReadCountProvider;
-    private final PostManager postManager;
 
-    public void update(long postId) {
+    public void increase(Long postId) {
         CachedPostReadCount cachedReadCount = cachedReadCountProvider.get(postId)
                 .orElseThrow(() -> new ResourceNotFoundException("cached readCount not found"));
 
-        long count = cachedReadCount.increaseCount();
-        if (cachedReadCountProvider.isMaxReadCount(count)) {
-            postManager.updateReadCount(postId, count);
-            cachedReadCountProvider.refresh(postId);
-            log.info("cached post read count update => {}", cachedReadCount.getKey());
-        }
-
+        cachedReadCount.increaseCount();
     }
 }
