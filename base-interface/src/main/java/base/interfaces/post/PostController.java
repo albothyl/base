@@ -1,6 +1,5 @@
 package base.interfaces.post;
 
-import base.application.post.CachedPostReadCountProvider;
 import base.application.post.CachedPostReadCountUpdater;
 import base.application.post.PostManager;
 import base.domain.post.entity.Post;
@@ -18,8 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostManager postManager;
-    private final CachedPostReadCountProvider cachedReadCountProvider;
-    private final CachedPostReadCountUpdater cachedPostReadCountUpdater;
+    private final CachedPostReadCountUpdater updater;
 
     @GetMapping
     public Page<Post> findAllPosts(
@@ -30,7 +28,7 @@ public class PostController {
     @GetMapping(path = "/{postId}")
     public Post findPost(@PathVariable Long postId) {
         Post post = postManager.findByPostIdWithComments(postId);
-        cachedPostReadCountUpdater.update(postId);
+        updater.increase(post.getPostId());
         return post;
     }
 
@@ -50,7 +48,6 @@ public class PostController {
     @DeleteMapping(path = "/{postId}")
     public ResponseEntity<Post> deletePost(@PathVariable Long postId) {
         postManager.deletePost(postId);
-        cachedReadCountProvider.remove(postId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
