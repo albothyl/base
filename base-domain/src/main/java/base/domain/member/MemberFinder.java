@@ -1,10 +1,9 @@
 package base.domain.member;
 
 import base.domain.member.entity.Member;
+import java.util.Optional;
 import base.domain.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class MemberFinder {

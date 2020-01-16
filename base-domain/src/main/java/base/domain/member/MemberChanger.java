@@ -16,10 +16,7 @@ public class MemberChanger {
     private final MemberFinder memberFinder;
 
     public void changePassword(final Long id, final String newPassword) {
-        final Member member = memberFinder.findMemberById(id)
-                .orElseThrow(
-                        () -> new IllegalArgumentException("member is not found")
-                );
+        final Member member = memberFinder.findMemberById(id);
 
         final String currentPassword = member.getMemberPassword();
 

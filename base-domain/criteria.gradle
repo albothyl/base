@@ -1,15 +1,15 @@
-def generatePATH = 'src/main/generated'
+def generatePATH = file("src/main/generated")
 
 task generateStaticMetamodel(dependsOn: 'compileJava') {
     tasks.withType(JavaCompile) {
-        options.annotationProcessorGeneratedSourcesDirectory = file(generatePATH)
+        options.annotationProcessorGeneratedSourcesDirectory = generatePATH
     }
 }
 
 sourceSets {
     generated {
         java {
-            srcDirs = ['src/main/java', generatePATH]
+            srcDirs = ['src/main/generated']
         }
     }
 }

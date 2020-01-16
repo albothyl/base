@@ -1,9 +1,8 @@
 package base.domain.member
 
 import base.domain.member.MemberChanger
-import base.domain.member.entity.Member
-import base.domain.member.exception.MemberPasswordEqualException
 import base.domain.member.repository.MemberRepository
+import base.domain.member.entity.Member
 import io.github.benas.randombeans.EnhancedRandomBuilder
 import io.github.benas.randombeans.api.EnhancedRandom
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,7 +35,7 @@ class MemberChangerTest extends Specification {
         thrown(IllegalArgumentException)
     }
 
-    def "새로운 패스워드가 기존 패스워드와 동일할 때 MemberPasswordEqualException 발생"() {
+    def "새로운 패스워드가 기존 패스워드와 동일할 때 IllegalArgumentException 발생"() {
         given:
         def builder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
                 .stringLengthRange(3,5)
