@@ -8,8 +8,7 @@ CREATE TABLE `base`.`posts` (
  `createdAt`             DATETIME(6)   NOT NULL                COMMENT '게시글 등록 일시',
  `modifiedAt`            DATETIME(6)   NOT NULL                COMMENT '게시글 수정 일시',
 
- PRIMARY KEY (`postId`),
- FOREIGN KEY(`memberId`) REFERENCES members(memberId));
+ PRIMARY KEY (`postId`);
 
 
 
@@ -21,6 +20,4 @@ CREATE TABLE `base`.`posts` (
  `createdAt`             DATETIME(6)   NOT NULL                COMMENT '댓글 등록 일시',
  `modifiedAt`            DATETIME(6)   NOT NULL                COMMENT '댓글 수정 일시',
 
- PRIMARY KEY (`commentId`),
- FOREIGN KEY(`memberId`) REFERENCES members(memberId),
- FOREIGN KEY(`postId`) REFERENCES posts(postId));
+ PRIMARY KEY (`commentId`);

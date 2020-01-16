@@ -4,8 +4,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    api group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-    api group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    api 'org.springframework.boot:spring-boot-starter-quartz'
+
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
     testImplementation 'org.springframework.security:spring-security-test'
 }
