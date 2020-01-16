@@ -1,14 +1,11 @@
 package base.domain.member.repository;
 
 import base.domain.member.entity.Member;
-import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
+import base.domain.support.repository.JpaAndSpecificationRepository;
 
-@Repository
-public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom
-	, JpaSpecificationExecutor<Member> {
+import java.util.Optional;
+
+public interface MemberRepository extends JpaAndSpecificationRepository<Member, Long>, MemberRepositoryCustom {
 
 	Optional<Member> findMemberByMemberEmail(String memberEmail);
 	boolean existsMemberByMemberEmail(String memberEmail);
