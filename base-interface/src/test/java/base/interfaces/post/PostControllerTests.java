@@ -1,6 +1,6 @@
 package base.interfaces.post;
 
-import base.application.post.CachedPostProvider;
+import base.application.post.CachedPostReadCountProvider;
 import base.domain.member.repository.MemberRepository;
 import base.domain.member.entity.Member;
 import base.domain.post.CommentRepository;

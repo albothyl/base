@@ -19,10 +19,10 @@ public class MemberCreateController {
     private final MemberSaver memberSaver;
 
     @PostMapping(value = "/members")
-    public ResponseEntity<Member> signUpMember(@RequestBody @Valid final SignUpMember signUpMember
+    public ResponseEntity signUpMember(@RequestBody @Valid final SignUpMember signUpMember
             , Errors errors) {
         if(errors.hasErrors()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(errors);
         }
 
         Member member = signUpMember.signUpMemberToMember();

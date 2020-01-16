@@ -13,13 +13,17 @@ public class MemberSaver {
     private final MemberRepository memberRepository;
 
     public Member signUp(final Member member) {
+        validateSignUpMember(member);
+
+        return memberRepository.save(member);
+    }
+
+    private void validateSignUpMember(Member member) {
         String memberEmail = member.getMemberEmail();
         boolean exists = memberRepository.existsMemberByMemberEmail(memberEmail);
 
         if(exists) {
-            throw new MemberDuplicatedException("memberEmail을 이미 사용중입니다.");
+            throw new MemberDuplicatedException("입력한 email은 이미 사용중입니다.");
         }
-
-        return memberRepository.save(member);
     }
 }
