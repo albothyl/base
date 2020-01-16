@@ -1,12 +1,13 @@
 package base.domain.member
 
 import base.domain.member.entity.Member
+import base.domain.member.repository.MemberBuildSpecs
+import base.domain.member.repository.MemberRepository
 import io.github.benas.randombeans.EnhancedRandomBuilder
 import io.github.benas.randombeans.api.EnhancedRandom
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Ignore
-import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
@@ -73,7 +74,7 @@ class MemberFinderTest extends Specification {
         def saveMember = memberRepository.save(member)
 
         when:
-        def result = memberRepository.findOne(MemberSpecSets.findMemberByMemberEmail(saveMember.memberEmail))
+        def result = memberRepository.findOne(MemberBuildSpecs.findMemberByMemberEmail(saveMember.memberEmail))
 
         then:
         with(result.get()) {
