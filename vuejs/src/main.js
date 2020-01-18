@@ -11,15 +11,16 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import store from './store.js'
 
-const base = axios.create({
-  baseURL: "http://localhost:8080",
+const baseAxios = axios.create({
+  baseURL: 'http://localhost:8080',
   headers: {
-    "Content-type": "application/json"
+    'Content-type': 'application/json;charset=UTF-8',
+    'Authorization': null
   }
 });
 
 Vue.config.productionTip = false
-Vue.prototype.$http = base
+Vue.prototype.$http = baseAxios
 Vue.use(BootstrapVue)
 Vue.prototype.moment = moment
 

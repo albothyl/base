@@ -50,7 +50,6 @@ bin/
 */src/main/generated/**
 .DS_Store
 node_modules/
-**/package-lock.json
 npm-debug.log
 *.map
 **/derby.log

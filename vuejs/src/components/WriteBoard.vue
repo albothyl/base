@@ -39,7 +39,12 @@ export default {
             
             this.$http.post('/boards',{
 			    title:this.title,
-                content:this.content
+                content:this.content,
+            },
+            {
+                headers: {
+                    Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
+                }
 		    }).then((response) => {
                 if(response.data === 'OK'){
                     console.log('success')

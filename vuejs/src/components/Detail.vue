@@ -53,7 +53,11 @@ export default {
     },
     created() {
         const seq = this.$route.params.seq
-        this.$http.get(`/boards/${seq}`).then((response) => {
+        this.$http.get(`/boards/${seq}`, {
+                headers: {
+                    Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
+                }
+		}).then((response) => {
             console.log(response)
             this.board = response.data
         }).catch(error => {
@@ -67,6 +71,11 @@ export default {
                 seq: this.board.seq,
 			    title: this.board.title,
                 content: this.board.content
+		    },
+            {
+                headers: {
+                    Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
+                }
 		    }).then((response) => {
                 if(response.data === 'OK'){
                     alert('수정 성공!')
@@ -81,7 +90,11 @@ export default {
             })
         },
         deleteBoard(seq) {
-            this.$http.delete(`/boards/${seq}`).then((response) => {
+            this.$http.delete(`/boards/${seq}`,{
+                headers: {
+                    Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
+                }
+		    }).then((response) => {
                 console.log(response)
                 if(response.data === 'OK'){
                     alert('삭제 성공!')
