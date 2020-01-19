@@ -46,17 +46,16 @@ class CachedReadCountJobTests extends Specification {
         def postId = 1l
         def count = 1000000
         def cache = new CachedPostReadCount("")
-        def map
+        def builder = ImmutableMap.builder()
 
         (1..100).each {
             cache.increaseCount()
         }
-
         (1..count).each {
-            map = ImmutableMap.builder()
-                    .put(postId++, cache)
-                    .build()
+            builder.put(postId++, cache)
         }
+
+        def map = builder.build()
 
         when:
         long start = System.currentTimeMillis()
@@ -64,7 +63,7 @@ class CachedReadCountJobTests extends Specification {
         long streamResult = System.currentTimeMillis() - start
 
         long start2 = System.currentTimeMillis()
-        job.testExecuteWithNotStream(jobExecutionContext)
+        job.executeWithNotStream(jobExecutionContext)
         long notStreamResult = System.currentTimeMillis() - start2
 
         then:
