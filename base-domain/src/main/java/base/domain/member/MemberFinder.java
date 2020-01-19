@@ -1,9 +1,9 @@
 package base.domain.member;
 
 import base.domain.member.entity.Member;
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
+import base.domain.member.repository.MemberRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MemberFinder {
@@ -19,6 +19,6 @@ public class MemberFinder {
 	}
 
 	public Optional<Member> findMemberByEmail(String memberEmail) {
-		return memberRepository.findMemberByMemberEmail(memberEmail);
+		return memberRepository.findByMemberEmail(memberEmail);
 	}
 }

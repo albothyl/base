@@ -1,4 +1,4 @@
-package base.application.member.exception;
+package base.domain.member.exception;
 
 public class MemberPasswordEqualException extends RuntimeException {
 

@@ -1,8 +1,11 @@
-package base.domain.member
+package base.domain.member.repository
 
 import base.domain.member.entity.Member
+import io.github.benas.randombeans.EnhancedRandomBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import spock.lang.Ignore
+import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
@@ -10,12 +13,39 @@ import spock.lang.Specification
 class MemberRepositoryTest extends Specification {
 
 	@Autowired
-	MemberRepository memberRepository
+    MemberRepository memberRepository
+
+	@Shared def enhancedRandom
+
+	def setupSpec() {
+		enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
+							.stringLengthRange(3, 5)
+							.collectionSizeRange(3, 5)
+							.build()
+	}
 
 	def setup() {
 		memberRepository.deleteAll()
 	}
 
+	def cleanup() {
+		memberRepository.deleteAll()
+	}
+
+	def "member email exist method test"() {
+		given:
+		def member = enhancedRandom.nextObject(Member.class, "memberId")
+
+		def savedMember = memberRepository.save(member)
+
+		when:
+		def exists = memberRepository.existsByMemberEmail(savedMember.memberEmail)
+
+		then:
+		exists
+	}
+
+	@Ignore
 	def "member save test"() {
 		given:
 
@@ -40,7 +70,6 @@ class MemberRepositoryTest extends Specification {
 		def result = memberRepository.save(member)
 
 		then:
-		println(result)
 		result.memberId != null
 		with(result) {
 			memberPassword == member.memberPassword

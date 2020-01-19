@@ -1,5 +1,6 @@
 apply from: 'querydsl.gradle'
 apply from: 'flyway.gradle'
+apply from: 'criteria.gradle'
 
 bootJar {
     enabled = false
@@ -11,13 +12,16 @@ jar {
 
 dependencies {
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    api group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
     implementation 'org.flywaydb:flyway-core'
+
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'com.querydsl:querydsl-apt'
 
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
-    testCompile group: 'com.h2database', name: 'h2', version: '1.4.199'
+    api group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
+    api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.199'
 
-
+    compileOnly group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.0.Final'
+    annotationProcessor group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.0.Final'
 }
