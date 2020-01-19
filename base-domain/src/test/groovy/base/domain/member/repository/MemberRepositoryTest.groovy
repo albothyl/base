@@ -1,12 +1,8 @@
 package base.domain.member.repository
 
 import base.domain.member.entity.Member
-import base.domain.member.exception.MemberDuplicatedException
-import base.domain.member.repository.MemberRepository
 import io.github.benas.randombeans.EnhancedRandomBuilder
-import io.github.benas.randombeans.api.EnhancedRandom
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Ignore
 import spock.lang.Shared
@@ -19,7 +15,7 @@ class MemberRepositoryTest extends Specification {
 	@Autowired
     MemberRepository memberRepository
 
-	@Shared EnhancedRandom enhancedRandom
+	@Shared def enhancedRandom
 
 	def setupSpec() {
 		enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
@@ -39,12 +35,11 @@ class MemberRepositoryTest extends Specification {
 	def "member email exist method test"() {
 		given:
 		def member = enhancedRandom.nextObject(Member.class, "memberId")
-		println member
 
 		def savedMember = memberRepository.save(member)
 
 		when:
-		def exists = memberRepository.existsMemberByMemberEmail(savedMember.memberEmail)
+		def exists = memberRepository.existsByMemberEmail(savedMember.memberEmail)
 
 		then:
 		exists
@@ -75,7 +70,6 @@ class MemberRepositoryTest extends Specification {
 		def result = memberRepository.save(member)
 
 		then:
-		println(result)
 		result.memberId != null
 		with(result) {
 			memberPassword == member.memberPassword

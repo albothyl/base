@@ -1,4 +1,4 @@
-package base.domain.member;
+package base.application.member;
 
 import base.domain.member.entity.Member;
 import base.domain.member.exception.MemberDuplicatedException;
@@ -8,22 +8,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MemberSaver {
+public class MemberSignManager {
 
     private final MemberRepository memberRepository;
 
     public Member signUp(final Member member) {
-        validateSignUpMember(member);
+        validateMemberEmail(member.getMemberEmail());
 
         return memberRepository.save(member);
     }
 
-    private void validateSignUpMember(Member member) {
-        String memberEmail = member.getMemberEmail();
-        boolean exists = memberRepository.existsMemberByMemberEmail(memberEmail);
+    private void validateMemberEmail(String memberEmail) {
+        boolean exists = memberRepository.existsByMemberEmail(memberEmail);
 
         if(exists) {
-            throw new MemberDuplicatedException("입력한 email은 이미 사용중입니다.");
+            throw new MemberDuplicatedException(memberEmail);
         }
     }
 }

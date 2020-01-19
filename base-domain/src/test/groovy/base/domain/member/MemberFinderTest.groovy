@@ -1,10 +1,9 @@
 package base.domain.member
 
 import base.domain.member.entity.Member
-import base.domain.member.repository.MemberBuildSpecs
 import base.domain.member.repository.MemberRepository
+import base.domain.member.repository.MemberSpecs
 import io.github.benas.randombeans.EnhancedRandomBuilder
-import io.github.benas.randombeans.api.EnhancedRandom
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Ignore
@@ -16,7 +15,7 @@ class MemberFinderTest extends Specification {
     @Autowired
     MemberRepository memberRepository
 
-    EnhancedRandom enhancedRandom;
+    def enhancedRandom;
 
     def setup() {
         memberRepository.deleteAll()
@@ -33,7 +32,7 @@ class MemberFinderTest extends Specification {
         def saveMember = memberRepository.save(member)
 
         when:
-        def result = memberRepository.findMemberByMemberEmail(saveMember.memberEmail)
+        def result = memberRepository.findByMemberEmail(saveMember.memberEmail)
 
         then:
         with(result.get()) {
@@ -74,7 +73,7 @@ class MemberFinderTest extends Specification {
         def saveMember = memberRepository.save(member)
 
         when:
-        def result = memberRepository.findOne(MemberBuildSpecs.findMemberByMemberEmail(saveMember.memberEmail))
+        def result = memberRepository.findOne(MemberSpecs.findMemberByMemberEmail(saveMember.memberEmail))
 
         then:
         with(result.get()) {

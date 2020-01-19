@@ -1,18 +1,17 @@
-package base.domain.member
+package base.application.member
 
 import base.domain.member.entity.Member
 import base.domain.member.exception.MemberDuplicatedException
 import base.domain.member.repository.MemberRepository
 import io.github.benas.randombeans.EnhancedRandomBuilder
-import io.github.benas.randombeans.api.EnhancedRandom
 import spock.lang.Shared
 import spock.lang.Specification
 
-class MemberSaverUnitTest extends Specification {
+class MemberSignManagerUnitTest extends Specification {
 
-    MemberRepository memberRepository
-    MemberSaver memberSaver
-    @Shared EnhancedRandom enhancedRandom
+    def memberRepository
+    def memberSignManager
+    @Shared def enhancedRandom
 
     def setupSpec() {
         enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
@@ -23,18 +22,17 @@ class MemberSaverUnitTest extends Specification {
 
     def "똑같은 이메일이 들어오면 MemberDuplicatedException 발생"() {
         given:
-        Member member = enhancedRandom.nextObject(Member.class)
+        def member = enhancedRandom.nextObject(Member.class)
 
         memberRepository = Stub(MemberRepository.class)
-        memberRepository.existsMemberByMemberEmail(member.memberEmail) >> true
+        memberRepository.existsByMemberEmail(member.memberEmail) >> true
 
-        memberSaver = new MemberSaver(memberRepository)
+        memberSignManager = new MemberSignManager(memberRepository)
 
         when:
-        memberSaver.signUp(member)
+        memberSignManager.signUp(member)
 
         then:
-        def error = thrown(MemberDuplicatedException.class)
-        error.message == "입력한 email은 이미 사용중입니다."
+        thrown(MemberDuplicatedException.class)
     }
 }

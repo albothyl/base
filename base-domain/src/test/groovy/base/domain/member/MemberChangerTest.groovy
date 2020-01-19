@@ -1,8 +1,9 @@
 package base.domain.member
 
-import base.domain.member.MemberChanger
-import base.domain.member.repository.MemberRepository
+
 import base.domain.member.entity.Member
+import base.domain.member.exception.MemberPasswordEqualException
+import base.domain.member.repository.MemberRepository
 import io.github.benas.randombeans.EnhancedRandomBuilder
 import io.github.benas.randombeans.api.EnhancedRandom
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +25,7 @@ class MemberChangerTest extends Specification {
 
     def "MemberId를 DB에 조회해보았을 때 없다면 IllegalArgumentException 발생"() {
         given:
-        Member member = EnhancedRandom.random(Member)
+        def member = EnhancedRandom.random(Member)
 
         def differentId = member.memberId+1
 
@@ -50,7 +51,7 @@ class MemberChangerTest extends Specification {
         memberChanger.changePassword(testMember.memberId, testMember.memberPassword)
 
         then:
-        thrown(MemberPasswordEqualException)
+        thrown(MemberPasswordEqualException.class)
     }
 
     def "기존 패스워드와 다른 새로운 패스워드가 들어올 때 성공적으로 비밀번호 변경"() {

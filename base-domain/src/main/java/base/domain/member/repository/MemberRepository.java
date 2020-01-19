@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaAndSpecificationRepository<Member, Long>, MemberRepositoryCustom {
 
-	Optional<Member> findMemberByMemberEmail(String memberEmail);
-	boolean existsMemberByMemberEmail(String memberEmail);
+	Optional<Member> findByMemberEmail(String memberEmail);
+	boolean existsByMemberEmail(String memberEmail);
 }

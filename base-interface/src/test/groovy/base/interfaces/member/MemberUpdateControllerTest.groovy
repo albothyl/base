@@ -1,7 +1,7 @@
 package base.interfaces.member
 
-import base.domain.member.repository.MemberRepository
 import base.domain.member.entity.Member
+import base.domain.member.repository.MemberRepository
 import base.support.PasswordEncoderUtils
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.benas.randombeans.EnhancedRandomBuilder
@@ -13,7 +13,7 @@ import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc

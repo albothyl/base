@@ -1,7 +1,8 @@
 package base.interfaces.member;
 
-import base.domain.member.MemberSaver;
+import base.application.member.MemberSignManager;
 import base.domain.member.entity.Member;
+import base.interfaces.member.converter.SignUpMemberToMemberConverter;
 import base.interfaces.member.dto.SignUpMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberCreateController {
 
-    private final MemberSaver memberSaver;
+    private final MemberSignManager memberSignManager;
+    private final SignUpMemberToMemberConverter signUpMemberToMemberConverter;
 
     @PostMapping(value = "/members")
     public ResponseEntity signUpMember(@RequestBody @Valid final SignUpMember signUpMember
@@ -25,8 +27,8 @@ public class MemberCreateController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        Member member = signUpMember.signUpMemberToMember();
-        Member savedMember = memberSaver.signUp(member);
+        Member member = signUpMemberToMemberConverter.convert(signUpMember);
+        Member savedMember = memberSignManager.signUp(member);
 
         return ResponseEntity.ok(savedMember);
     }

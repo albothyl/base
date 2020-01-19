@@ -5,7 +5,7 @@ import base.domain.member.entity.Member_;
 import base.domain.support.entity.CommonSpecificationUtils;
 import org.springframework.data.jpa.domain.Specification;
 
-public class MemberBuildSpecs {
+public class MemberSpecs {
 
   public static Specification<Member> findMemberByMemberEmail(String memberEmail) {
     return Specification
