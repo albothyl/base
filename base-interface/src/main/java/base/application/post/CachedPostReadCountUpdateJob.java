@@ -9,6 +9,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -29,6 +30,23 @@ public class CachedPostReadCountUpdateJob implements Job {
         provider.invalidateAll();
 
         log.info("cached post readCount scheduler update all <{}>", map.size());
+    }
+
+    /*
+     * test method
+     */
+    @Deprecated
+    public void executeWithNotStream(JobExecutionContext context) {
+        Map<Long, CachedPostReadCount> map = provider.getAll();
+
+        Set<Map.Entry<Long, CachedPostReadCount>> entrySet = map.entrySet();
+
+        for (Map.Entry<Long, CachedPostReadCount> entry:entrySet) {
+            if(moreThanZeroCount(entry)){
+                updateReadCount(entry);
+            }
+        }
+        provider.invalidateAll();
     }
 
     private boolean moreThanZeroCount(Map.Entry<Long, CachedPostReadCount> entry) {

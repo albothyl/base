@@ -2,6 +2,7 @@ package base.application.post
 
 import base.domain.post.cache.CachedPostReadCount
 import com.google.common.collect.ImmutableMap
+import org.junit.Ignore
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 import org.quartz.JobExecutionContext
@@ -38,4 +39,47 @@ class CachedReadCountJobTests extends Specification {
         1 * postManager.updateReadCount(postId, readCount)
         1 * cachedReadCountProvider.invalidateAll()
     }
+
+    @Ignore
+    def "stream foreach 성능 테스트 비교"() {
+        given:
+        def postId = 1l
+        def count = 1000000
+        def cache = new CachedPostReadCount("")
+        def map
+
+        (1..100).each {
+            cache.increaseCount()
+        }
+
+        (1..count).each {
+            map = ImmutableMap.builder()
+                    .put(postId++, cache)
+                    .build()
+        }
+
+        when:
+        long start = System.currentTimeMillis()
+        job.execute(jobExecutionContext)
+        long streamResult = System.currentTimeMillis() - start
+
+        long start2 = System.currentTimeMillis()
+        job.testExecuteWithNotStream(jobExecutionContext)
+        long notStreamResult = System.currentTimeMillis() - start2
+
+        then:
+        2 * cachedReadCountProvider.getAll() >> map
+
+        and:
+        printf "stream foreach result " + streamResult + ", not stream foreach result " + notStreamResult
+
+    }
 }
+
+
+
+
+
+
+
+
