@@ -1,27 +1,32 @@
-apply from: 'querydsl.gradle'
+apply from: 'jpa.gradle'
 apply from: 'flyway.gradle'
-apply from: 'criteria.gradle'
 
 bootJar {
-    enabled = false
+	enabled = false
 }
 
 jar {
-    enabled = true
+	enabled = true
 }
 
 dependencies {
-    api 'org.springframework.boot:spring-boot-starter-data-jpa'
-    api group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
-    implementation 'org.flywaydb:flyway-core'
+	api(
+			"org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}",
+			"mysql:mysql-connector-java:${mysqlConnectorVersion}",
+			"com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+	)
 
-    implementation 'com.querydsl:querydsl-jpa'
-    implementation 'com.querydsl:querydsl-apt'
+	implementation(
+			"org.flywaydb:flyway-core:${flywayVersion}",
+			"com.querydsl:querydsl-jpa:${queryDslVersion}",
+			"com.querydsl:querydsl-apt:${queryDslVersion}"
+	)
 
-    api group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
-    api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
-    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.199'
+	compileOnly(
+			"org.hibernate:hibernate-jpamodelgen:${hibernateVersion}"
+	)
 
-    compileOnly group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.0.Final'
-    annotationProcessor group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.0.Final'
+	testImplementation(
+			"com.h2database:h2:${h2databaseVersion}"
+	)
 }

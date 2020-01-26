@@ -1,13 +1,18 @@
 dependencies {
-    api (project(':base-domain'))
+	api(project(':base-domain'))
 
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+	api(
+			"org.springframework.boot:spring-boot-starter-quartz:${springBootVersion}",
+			"io.springfox:springfox-swagger2:${swaggerVersion}",
+			"io.springfox:springfox-swagger-ui:${swaggerVersion}"
+	)
 
-    api 'org.springframework.boot:spring-boot-starter-quartz'
+	implementation(
+			"org.springframework.boot:spring-boot-starter-security:${springBootVersion}",
+			"org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+	)
 
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-
-    testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation (
+			"org.springframework.security:spring-security-test:${springSecurityTest}"
+	)
 }
