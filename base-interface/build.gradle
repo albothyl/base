@@ -13,6 +13,6 @@ dependencies {
 	)
 
 	testImplementation (
-			"org.springframework.security:spring-security-test:${springSecurityTest}"
+			"org.springframework.security:spring-security-test:${springSecurityTestVersion}"
 	)
 }
