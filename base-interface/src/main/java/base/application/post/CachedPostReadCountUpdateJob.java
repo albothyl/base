@@ -1,22 +1,23 @@
 package base.application.post;
 
 import base.domain.post.cache.CachedPostReadCount;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Slf4j
-@Component
-@RequiredArgsConstructor
+@Service
 public class CachedPostReadCountUpdateJob implements Job {
 
-    private final PostManager postManager;
-    private final CachedPostReadCountProvider provider;
+    @Autowired
+    private PostManager postManager;
+    @Autowired
+    private CachedPostReadCountProvider provider;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
