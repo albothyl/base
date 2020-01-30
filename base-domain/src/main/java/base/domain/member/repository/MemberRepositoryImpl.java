@@ -13,7 +13,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
   private final JPAQueryFactory jpaQueryFactory;
 
   @Override
-  public Optional<Member> findMemberByMemberEmailUsingQuerydsl(String memberEmail) {
+  public Optional<Member> findByMemberEmailUsingQuerydsl(String memberEmail) {
     return Optional.of(
         jpaQueryFactory.selectFrom(member)
             .where(member.memberEmail.eq(memberEmail))

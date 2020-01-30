@@ -1,6 +1,7 @@
 package base.domain.member;
 
 import base.domain.member.entity.Member;
+import base.domain.member.exception.MemberNotFoundException;
 import base.domain.member.exception.MemberPasswordEqualException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,7 @@ public class MemberChanger {
     public void changePassword(final Long id, final String newPassword) {
         final Member member = memberFinder.findMemberById(id)
                 .orElseThrow(
-                        () -> new IllegalArgumentException("member is not found")
+                        () -> new MemberNotFoundException("member is not found")
                 );
 
         final String currentPassword = member.getMemberPassword();
