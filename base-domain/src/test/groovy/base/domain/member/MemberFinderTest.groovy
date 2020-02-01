@@ -53,7 +53,7 @@ class MemberFinderTest extends Specification {
         def saveMember = memberRepository.save(member)
 
         when:
-        def result = memberRepository.findMemberByMemberEmailUsingQuerydsl(saveMember.memberEmail)
+        def result = memberRepository.findByMemberEmailUsingQuerydsl(saveMember.memberEmail)
 
         then:
         with(result.get()) {

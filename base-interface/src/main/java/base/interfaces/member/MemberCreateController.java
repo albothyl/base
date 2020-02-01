@@ -1,6 +1,6 @@
 package base.interfaces.member;
 
-import base.application.member.MemberSignManager;
+import base.application.member.MemberRegistrationProvider;
 import base.domain.member.entity.Member;
 import base.interfaces.member.converter.SignUpMemberToMemberConverter;
 import base.interfaces.member.dto.SignUpMember;
@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberCreateController {
 
-    private final MemberSignManager memberSignManager;
+    private final MemberRegistrationProvider memberRegistrationProvider;
     private final SignUpMemberToMemberConverter signUpMemberToMemberConverter;
 
     @PostMapping(value = "/members")
@@ -28,7 +28,7 @@ public class MemberCreateController {
         }
 
         Member member = signUpMemberToMemberConverter.convert(signUpMember);
-        Member savedMember = memberSignManager.signUp(member);
+        Member savedMember = memberRegistrationProvider.signUp(member);
 
         return ResponseEntity.ok(savedMember);
     }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MemberSignManager {
+public class MemberRegistrationProvider {
 
     private final MemberRepository memberRepository;
 
