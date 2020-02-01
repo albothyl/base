@@ -1,0 +1,27 @@
+ext {
+    generateSourcePath = 'src/main/generated/java-jpa'
+}
+
+dependencies {
+    annotationProcessor(
+            "com.querydsl:querydsl-apt:${queryDslVersion}:jpa",
+            "org.hibernate:hibernate-jpamodelgen:${hibernateVersion}",
+            "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaApiVersion}"
+    )
+}
+
+sourceSets {
+    generated {
+        java {
+            srcDirs = ["${generateSourcePath}"]
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file("${generateSourcePath}")
+}
+
+clean.doLast {
+    file("${generateSourcePath}").deleteDir()
+}

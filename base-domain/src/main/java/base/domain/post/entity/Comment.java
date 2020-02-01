@@ -6,7 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
 @Builder
 @ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

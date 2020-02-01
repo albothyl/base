@@ -3,8 +3,9 @@ plugins {
 	id 'groovy'
 	id 'org.springframework.boot' version '2.2.0.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-	id "org.flywaydb.flyway" version "6.0.6"
+	id "org.flywaydb.flyway" version '6.0.6'
 	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+	id 'io.franzbecker.gradle-lombok' version '1.8'
 }
 
 allprojects {
@@ -29,28 +30,71 @@ allprojects {
 bootJar {
 	mainClassName = 'base.BaseApplication'
 }
+
+ext {
+//  Project ==================================
+	projectVersion = '0.0.1-SNAPSHOT'
+	projectJvmVersion = '1.8'
+
+//  Root =====================================
+	springBootVersion = '2.2.0.RELEASE'
+	guavaVersion = '28.1-jre'
+	lang3Version = '3.9'
+	lombokVersion = '1.18.10'
+
+// Interface =================================
+	swaggerVersion = '2.9.2'
+	springSecurityTestVersion = '5.2.0.RELEASE'
+
+// Domain ====================================
+	mysqlConnectorVersion = '8.0.18'
+	hibernateVersion = '5.4.0.Final'
+	hibernateJpaApiVersion = '1.0.2.Final'
+	queryDslVersion = '4.2.1'
+	flywayVersion = '6.0.6'
+	jacksonVersion = '2.10.0'
+
+// Test	======================================
+	spockVersion = '1.3-groovy-2.5'
+	randomBeanVersion = '3.9.0'
+	h2databaseVersion = '1.4.199'
+}
+
 subprojects {
 	group = 'com.study'
-	version = '0.0.1-SNAPSHOT'
-	sourceCompatibility = '1.8'
+	version = "${projectVersion}"
+	sourceCompatibility = "${projectJvmVersion}"
 
+	/**
+	 * Gradle Dependencies Reference
+	 * https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_configurations_graph
+	 * https://jongmin92.github.io/2019/05/09/Gradle/gradle-api-vs-implementation/
+	 * https://kwonnam.pe.kr/wiki/gradle/dependencies
+	 */
 	dependencies {
-		implementation 'org.springframework.boot:spring-boot-starter'
+		api (
+				"com.google.guava:guava:${guavaVersion}",
+				"org.apache.commons:commons-lang3:${lang3Version}"
+		)
 
-		api group: 'com.google.guava', name: 'guava', version: '28.1-jre'
-		api group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+		implementation (
+				"org.springframework.boot:spring-boot-starter:${springBootVersion}"
+		)
 
-		compileOnly 'org.projectlombok:lombok'
+		compileOnly (
+				"org.projectlombok:lombok:${lombokVersion}"
+		)
 
-		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-		annotationProcessor 'org.projectlombok:lombok'
+		annotationProcessor(
+				"org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}",
+				"org.projectlombok:lombok:${lombokVersion}"
+		)
 
-		testImplementation('org.springframework.boot:spring-boot-starter-test') {
-			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-		}
-		testCompile('org.springframework.boot:spring-boot-starter-test')
-		testCompile group: 'org.spockframework', name: 'spock-spring', version: '1.3-groovy-2.5'
-		testCompile group: 'io.github.benas', name: 'random-beans-randomizers', version: '3.9.0'
+		testCompile(
+				"org.springframework.boot:spring-boot-starter-test:${springBootVersion}",
+				"org.spockframework:spock-spring:${spockVersion}",
+				"io.github.benas:random-beans-randomizers:${randomBeanVersion}"
+		)
 	}
 
 	dependencyManagement {

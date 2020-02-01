@@ -35,9 +35,9 @@ public class Post extends CreatedAndModifiedEntity {
 
     private long readCount;
 
-    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "postId")
-    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     public void update(Post post) {
         this.title = post.getTitle();
