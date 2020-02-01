@@ -1,10 +1,7 @@
-package base.support;
+package base.support.errors;
 
-import base.interfaces.member.exception.ErrorsSerializerException;
-import com.fasterxml.jackson.core.JsonGenerationException;
+import base.support.errors.exception.ErrorsSerializerException;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +14,6 @@ import java.io.IOException;
 @Slf4j
 public class ErrorsSerializer extends JsonSerializer<Errors> {
 
-    private static final String FIELD = "field";
-    private static final String OBJECT_NAME = "objectName";
-    private static final String CODE = "code";
-    private static final String DEFAULT_MESSAGE = "defaultMessage";
-    private static final String REJECTED_VALUE = "rejectedValue";
-
     @Override
     public void serialize(Errors errors, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartArray();
@@ -31,15 +22,15 @@ public class ErrorsSerializer extends JsonSerializer<Errors> {
             try {
                 gen.writeStartObject();
 
-                gen.writeStringField(FIELD, e.getField());
-                gen.writeStringField(OBJECT_NAME, e.getObjectName());
-                gen.writeStringField(CODE, e.getCode());
-                gen.writeStringField(DEFAULT_MESSAGE, e.getDefaultMessage());
+                gen.writeStringField(ErrorsProperty.FIELD.getPropertyName(), e.getField());
+                gen.writeStringField(ErrorsProperty.OBJECT_NAME.getPropertyName(), e.getObjectName());
+                gen.writeStringField(ErrorsProperty.CODE.getPropertyName(), e.getCode());
+                gen.writeStringField(ErrorsProperty.DEFAULT_MESSAGE.getPropertyName(), e.getDefaultMessage());
 
                 Object rejectedValue = e.getRejectedValue();
 
                 if (rejectedValue != null) {
-                    gen.writeStringField(REJECTED_VALUE, rejectedValue.toString());
+                    gen.writeStringField(ErrorsProperty.REJECTED_VALUE.getPropertyName(), rejectedValue.toString());
                 }
 
                 gen.writeEndObject();
@@ -52,9 +43,9 @@ public class ErrorsSerializer extends JsonSerializer<Errors> {
             try {
                 gen.writeStartObject();
 
-                gen.writeStringField(OBJECT_NAME, e.getObjectName());
-                gen.writeStringField(CODE, e.getCode());
-                gen.writeStringField(DEFAULT_MESSAGE, e.getDefaultMessage());
+                gen.writeStringField(ErrorsProperty.OBJECT_NAME.getPropertyName(), e.getObjectName());
+                gen.writeStringField(ErrorsProperty.CODE.getPropertyName(), e.getCode());
+                gen.writeStringField(ErrorsProperty.DEFAULT_MESSAGE.getPropertyName(), e.getDefaultMessage());
 
                 gen.writeEndObject();
             } catch (IOException exception) {

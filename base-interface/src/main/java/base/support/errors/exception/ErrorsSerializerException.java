@@ -1,4 +1,4 @@
-package base.interfaces.member.exception;
+package base.support.errors.exception;
 
 public class ErrorsSerializerException extends RuntimeException {
 
