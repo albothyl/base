@@ -1,7 +1,7 @@
 package base.application.member
 
 import base.domain.member.entity.Member
-import base.domain.member.exception.MemberDuplicatedException
+import base.application.member.exception.MemberDuplicatedException
 import base.domain.member.repository.MemberRepository
 import io.github.benas.randombeans.EnhancedRandomBuilder
 import spock.lang.Shared

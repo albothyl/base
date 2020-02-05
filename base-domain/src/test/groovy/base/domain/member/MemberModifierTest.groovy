@@ -46,7 +46,7 @@ class MemberModifierTest extends Specification {
         thrown(MemberNotFoundException.class)
     }
 
-    def "새로운 패스워드가 기존 패스워드와 동일할 때 IllegalArgumentException 발생"() {
+    def "새로운 패스워드가 기존 패스워드와 동일할 때 changePassword 메소드를 호출하면 MemberPasswordEqualException 발생"() {
         given:
         def testMember = enhanceRandom.nextObject(Member, "memberId")
 

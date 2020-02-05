@@ -1,4 +1,4 @@
-package base.domain.member.exception;
+package base.application.member.exception;
 
 import base.domain.support.exception.InvalidValueException;
 

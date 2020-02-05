@@ -4,7 +4,9 @@ import base.domain.support.exception.InvalidValueException;
 
 public class MemberPasswordEqualException extends InvalidValueException {
 
-  public MemberPasswordEqualException(String msg) {
-    super(msg);
+  private static final String MESSAGE = "new password and exist password are equal";
+
+  public MemberPasswordEqualException() {
+    super(MESSAGE);
   }
 }

@@ -16,17 +16,19 @@ public class MemberModifier {
     private final MemberFinder memberFinder;
 
     public void changePassword(final Long memberId, final String newPassword) {
-        final Member member = memberFinder.findMemberById(memberId)
-                .orElseThrow(
-                        () -> new MemberNotFoundException("member is not found")
-                );
+        Member member = memberFinder.findMemberById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
 
         final String currentPassword = member.getMemberPassword();
 
-        if(StringUtils.equals(currentPassword, newPassword)) {
-            throw new MemberPasswordEqualException("new password and exist password are equal");
-        }
+        checkPasswordEqual(currentPassword, newPassword);
 
         member.changePassword(newPassword);
+    }
+
+    private void checkPasswordEqual(String currentPassword, String newPassword) {
+        if(StringUtils.equals(currentPassword, newPassword)) {
+            throw new MemberPasswordEqualException();
+        }
     }
 }
