@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberChanger {
+public class MemberModifier {
 
     private final MemberFinder memberFinder;
 
-    public void changePassword(final Long id, final String newPassword) {
-        final Member member = memberFinder.findMemberById(id)
+    public void changePassword(final Long memberId, final String newPassword) {
+        final Member member = memberFinder.findMemberById(memberId)
                 .orElseThrow(
                         () -> new MemberNotFoundException("member is not found")
                 );

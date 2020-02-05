@@ -1,6 +1,6 @@
 package base.interfaces.member;
 
-import base.domain.member.MemberChanger;
+import base.domain.member.MemberModifier;
 import base.support.PasswordEncoderUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberUpdateController {
 
-  private final MemberChanger memberChanger;
+  private final MemberModifier memberModifier;
 
   @PatchMapping("/members/{memberId}")
   public ResponseEntity updatePassword(@PathVariable @NonNull Long memberId,
       @RequestBody @NonNull String newPassword) {
 
     String encodePassword = PasswordEncoderUtils.passwordEncode(newPassword);
-    memberChanger.changePassword(memberId, encodePassword);
+    memberModifier.changePassword(memberId, encodePassword);
 
     return ResponseEntity.ok().build();
   }

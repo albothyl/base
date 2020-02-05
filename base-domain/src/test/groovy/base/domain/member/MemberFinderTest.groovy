@@ -7,6 +7,7 @@ import io.github.benas.randombeans.EnhancedRandomBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Ignore
+import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
@@ -15,15 +16,18 @@ class MemberFinderTest extends Specification {
     @Autowired
     MemberRepository memberRepository
 
-    def enhancedRandom;
+    @Shared
+    def enhancedRandom
 
-    def setup() {
-        memberRepository.deleteAll()
-
+    def setupSpec() {
         enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
                 .stringLengthRange(3, 5)
                 .collectionSizeRange(2, 3)
-                .build();
+                .build()
+    }
+
+    def setup() {
+        memberRepository.deleteAll()
     }
 
     def "member find test"() {
