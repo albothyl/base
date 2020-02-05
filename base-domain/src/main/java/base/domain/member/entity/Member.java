@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "members", schema = "base")
+@Table(schema = "base", name = "members")
 public class Member extends CreatedAndModifiedEntity {
 
 	@Id

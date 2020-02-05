@@ -2,6 +2,7 @@ package base.domain.member
 
 
 import base.domain.member.entity.Member
+import base.domain.member.exception.MemberNotFoundException
 import base.domain.member.exception.MemberPasswordEqualException
 import base.domain.member.repository.MemberRepository
 import io.github.benas.randombeans.EnhancedRandomBuilder
@@ -23,7 +24,7 @@ class MemberChangerTest extends Specification {
         memberRepository.deleteAll()
     }
 
-    def "MemberId를 DB에 조회해보았을 때 없다면 IllegalArgumentException 발생"() {
+    def "MemberId를 DB에 조회해보았을 때 없다면 MemberNotFoundException 발생"() {
         given:
         def member = EnhancedRandom.random(Member)
 
@@ -33,7 +34,7 @@ class MemberChangerTest extends Specification {
         memberChanger.changePassword(differentId, "newPassword")
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(MemberNotFoundException.class)
     }
 
     def "새로운 패스워드가 기존 패스워드와 동일할 때 IllegalArgumentException 발생"() {
