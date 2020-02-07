@@ -19,9 +19,7 @@ public class MemberRegistrationProvider {
     }
 
     private void validateMemberEmail(String memberEmail) {
-        boolean exists = memberRepository.existsByMemberEmail(memberEmail);
-
-        if(exists) {
+        if(memberRepository.existsByMemberEmail(memberEmail)) {
             throw new MemberDuplicatedException(memberEmail);
         }
     }

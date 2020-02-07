@@ -10,13 +10,13 @@ import javax.persistence.metamodel.SingularAttribute;
 public class CommonSpecificationUtils {
 
   public static <T, R> Specification<T> equal(SingularAttribute<T, R> attribute, R value) {
-    Preconditions.checkNotNull(value);
+    Preconditions.checkNotNull(value, "value must not be null");
 
     return (root, query, builder) -> builder.equal(root.get(attribute), value);
   }
 
   public static <T, R extends Number> Specification<T> gt(SingularAttribute<T, R> attribute, R value) {
-    Preconditions.checkNotNull(value);
+    Preconditions.checkNotNull(value, "value must not be null");
 
     return (root, query, builder) -> builder.gt(root.get(attribute), value);
   }
