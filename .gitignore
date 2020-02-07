@@ -48,6 +48,7 @@ contiperf-report/
 bin/
 */src/generated/
 */src/main/generated/**
+*/src/main/groovy/generated/**
 .DS_Store
 node_modules/
 npm-debug.log
