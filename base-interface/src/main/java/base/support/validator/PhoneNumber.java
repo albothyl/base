@@ -16,7 +16,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ METHOD, FIELD})
 @Retention(RUNTIME)
 @Constraint(validatedBy = PhoneNumberValidator.class)
-public @interface PhoneNum {
+public @interface PhoneNumber
+{
     String message() default "핸드폰은 10자리, 11자리 숫자로만 입력해야 합니다.";
 
     Class<?>[] groups() default {};
