@@ -46,7 +46,7 @@ public class CommentControllerTests extends BaseTestControllerSupport {
                 .boardType(BoardType.FREE)
                 .title("제목")
                 .contents("내용")
-                .member(savedMember)
+                .memberId(savedMember.getMemberId())
                 .build();
 
         savedPost = postRepository.save(post);
@@ -57,16 +57,16 @@ public class CommentControllerTests extends BaseTestControllerSupport {
     @DisplayName("댓글 생성 테스트")
     public void createCommentTest() throws Exception {
         //given
-        String url = "/posts/comment";
+        String url = "/comments";
         Comment comment = Comment.builder()
                 .contents("댓글생성")
                 .postId(savedPost.getPostId())
-                .member(savedMember)
+                .memberId(savedMember.getMemberId())
                 .build();
 
         //when, then
         postResource(url, comment)
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(JSON_UTF8_MEDIA_TYPE))
                 .andExpect(jsonPath("$.contents").value(comment.getContents()))
                 .andDo(MockMvcResultHandlers.print());
@@ -80,11 +80,11 @@ public class CommentControllerTests extends BaseTestControllerSupport {
         Comment comment = Comment.builder()
                 .contents("댓글생성")
                 .postId(savedPost.getPostId())
-                .member(savedMember)
+                .memberId(savedMember.getMemberId())
                 .build();
 
         Comment savedComment = commentRepository.save(comment);
-        String url = "/posts/comment/" + savedComment.getCommentId();
+        String url = "/comments/" + savedComment.getCommentId();
 
 
         //when, then
@@ -101,11 +101,11 @@ public class CommentControllerTests extends BaseTestControllerSupport {
         Comment comment = Comment.builder()
                 .contents("댓글생성")
                 .postId(savedPost.getPostId())
-                .member(savedMember)
+                .memberId(savedMember.getMemberId())
                 .build();
 
         Comment savedComment = commentRepository.save(comment);
-        String url = "/posts/comment/" + savedComment.getCommentId();
+        String url = "/comments/" + savedComment.getCommentId();
 
 
         //when, then

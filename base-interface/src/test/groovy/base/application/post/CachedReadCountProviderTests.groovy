@@ -3,6 +3,7 @@ package base.application.post
 import base.domain.post.PostRepository
 import base.domain.post.cache.CachedPostReadCount
 import base.domain.post.entity.Post
+import com.google.common.collect.ImmutableMap
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 import spock.lang.Specification
@@ -13,7 +14,7 @@ class CachedReadCountProviderTests extends Specification {
     def postRepository = Mock(PostRepository)
     def cachedReadCountProvider = new CachedPostReadCountProvider(postRepository)
 
-    def "cache get 테스트"() {
+    def "increase 테스트"() {
         given:
         def postId = 1
         def post = Post.builder()
@@ -21,18 +22,17 @@ class CachedReadCountProviderTests extends Specification {
                 .build()
 
         when:
-        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
+        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.increaseCount(postId)
 
         then:
         1 * postRepository.findById(postId) >> Optional.ofNullable(post)
 
         and:
         cachedReadCount.isPresent()
-        cachedReadCount.get().getCount() == 0
+        cachedReadCount.get().getCount() == 1
     }
 
-
-    def "cache isMaxReadCount 테스트"() {
+    def "getAll 테스트"() {
         given:
         def postId = 1
         def post = Post.builder()
@@ -40,62 +40,36 @@ class CachedReadCountProviderTests extends Specification {
                 .build()
 
         when:
-        boolean firstGetIsMax = cachedReadCountProvider.isMaxReadCount(postId)
-        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
-
-        (1..100).each {
-            cachedReadCount.get().increaseCount()
-        }
-
-        def count = cachedReadCountProvider.get(postId).get().getCount()
-        boolean secondGetIsMax = cachedReadCountProvider.isMaxReadCount(count)
+        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.increaseCount(postId)
+        ImmutableMap<Long, CachedPostReadCount> map = cachedReadCountProvider.getAll()
 
         then:
         1 * postRepository.findById(postId) >> Optional.ofNullable(post)
 
         and:
-        firstGetIsMax == false
-        secondGetIsMax == true
+        cachedReadCount.isPresent()
+        cachedReadCount.get().count == 1
+        cachedReadCount.get().postId == postId
+        map.size() == 1
     }
 
-    def "cache refresh 테스트"() {
+    def "invalidate 테스트"() {
         given:
-        def postId = 1l
+        def postId = 1
         def post = Post.builder()
                 .postId(postId)
                 .build()
 
         when:
-        Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
-        cachedReadCount.get().increaseCount()
-        cachedReadCountProvider.refresh(postId)
-        Optional<CachedPostReadCount> cachedReadCount2 = cachedReadCountProvider.get(postId)
-
-
-        then:
-        2 * postRepository.findById(postId) >> Optional.ofNullable(post)
-
-        and:
-        cachedReadCount.get().getCount() == 1
-        cachedReadCount2.get().getCount() == 0
-    }
-
-    def "cache remove 테스트"() {
-        given:
-        def postId = 1l
-        def post = Post.builder()
-                .postId(postId)
-                .build()
-
-        when:
-        cachedReadCountProvider.get(postId)
-        cachedReadCountProvider.remove(postId)
+        cachedReadCountProvider.increaseCount(postId)
+        cachedReadCountProvider.invalidate(postId)
 
         then:
         1 * postRepository.findById(postId) >> Optional.ofNullable(post)
 
         and:
-        cachedReadCountProvider.size == 0
+        cachedReadCountProvider.getAll().size() == 0
+
     }
 }
 

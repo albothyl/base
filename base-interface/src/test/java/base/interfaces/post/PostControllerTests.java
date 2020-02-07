@@ -5,10 +5,12 @@ import base.domain.member.repository.MemberRepository;
 import base.domain.member.entity.Member;
 import base.domain.post.CommentRepository;
 import base.domain.post.PostRepository;
+import base.domain.post.cache.CachedPostReadCount;
 import base.domain.post.constants.BoardType;
 import base.domain.post.entity.Comment;
 import base.domain.post.entity.Post;
 import base.support.BaseTestControllerSupport;
+import com.google.common.collect.ImmutableMap;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.jupiter.api.*;
@@ -19,7 +21,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.util.NumberUtils;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -60,7 +61,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
         //given
         String url = "/posts";
         Post post = Post.builder()
-                .member(savedMember)
+                .memberId(savedMember.getMemberId())
                 .boardType(BoardType.FREE)
                 .title("제목")
                 .contents("내용")
@@ -68,7 +69,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
 
         //when, then
         postResource(url, post)
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(JSON_UTF8_MEDIA_TYPE))
                 .andExpect(jsonPath("$.title").value(post.getTitle()))
                 .andExpect(jsonPath("$.contents").value(post.getContents()))
@@ -81,7 +82,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     public void updatePostTest() throws Exception {
         //given
         Post post = Post.builder()
-                .member(savedMember)
+                .memberId(savedMember.getMemberId())
                 .boardType(BoardType.FREE)
                 .title("제목")
                 .contents("내용")
@@ -104,7 +105,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     public void findPostWithCommentTest() throws Exception {
         //given
         Post post = Post.builder()
-                .member(savedMember)
+                .memberId(savedMember.getMemberId())
                 .boardType(BoardType.FREE)
                 .title("제목")
                 .contents("내용")
@@ -112,7 +113,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
 
         Post savedPost = postRepository.save(post);
 
-        Comment comment = Comment.builder().member(savedMember)
+        Comment comment = Comment.builder().memberId(savedMember.getMemberId())
                 .postId(savedPost.getPostId())
                 .contents("댓글")
                 .build();
@@ -135,7 +136,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
                 .andExpect(jsonPath("$.comments", hasSize(1)))
                 .andExpect(jsonPath("$.comments[0].contents", is(comment.getContents())))
 
-                .andExpect(jsonPath("$.member.memberId",
+                .andExpect(jsonPath("$.memberId",
                         is(NumberUtils.convertNumberToTargetClass(savedMember.getMemberId(), Integer.class))))
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -146,7 +147,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     public void deletePostTest() throws Exception {
         //given
         Post post = Post.builder()
-                .member(savedMember)
+                .memberId(savedMember.getMemberId())
                 .boardType(BoardType.FREE)
                 .title("제목")
                 .contents("내용")
@@ -167,7 +168,7 @@ public class PostControllerTests extends BaseTestControllerSupport {
     public void updateCacheTest() throws Exception {
         //given
         Post post = Post.builder()
-                .member(savedMember)
+                .memberId(savedMember.getMemberId())
                 .boardType(BoardType.FREE)
                 .title("제목")
                 .contents("내용")
@@ -185,11 +186,10 @@ public class PostControllerTests extends BaseTestControllerSupport {
                     .andExpect(status().isOk());
         }
 
-        Optional<Post> getPost = postRepository.findById(postId);
+        ImmutableMap<Long, CachedPostReadCount> map = cachedReadCountProvider.getAll();
 
-        assertThat(cachedReadCountProvider.get(postId)).isPresent();
-        assertThat(cachedReadCountProvider.get(postId).get().getCount()).isEqualTo(100);
-        assertThat(getPost.get().getReadCount()).isEqualTo(100);
+        assertThat(map.keySet().contains(postId)).isTrue();
+        assertThat(map.get(postId).getCount()).isEqualTo(100);
     }
 }
 
