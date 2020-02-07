@@ -1,8 +1,8 @@
 package base.interfaces.post;
 
 import base.application.post.CachedPostReadCountProvider;
-import base.application.post.CachedPostReadCountUpdater;
-import base.application.post.PostManager;
+import base.application.post.PostFinder;
+import base.application.post.PostModifier;
 import base.domain.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,40 +17,39 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final PostManager postManager;
+    private final PostFinder postFinder;
+    private final PostModifier postModifier;
     private final CachedPostReadCountProvider cachedReadCountProvider;
-    private final CachedPostReadCountUpdater cachedPostReadCountUpdater;
 
     @GetMapping
     public Page<Post> findAllPosts(
             @PageableDefault(sort = {"postId"}, page = 10, size = 10) Pageable pageable) {
-        return postManager.findAllPosts(pageable);
+        return postFinder.findAllPosts(pageable);
     }
 
     @GetMapping(path = "/{postId}")
     public Post findPost(@PathVariable Long postId) {
-        Post post = postManager.findByPostIdWithComments(postId);
-        cachedPostReadCountUpdater.update(postId);
+        Post post = postFinder.findByPostId(postId);
+        cachedReadCountProvider.increaseCount(postId);
         return post;
     }
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
-        Post createPost = postManager.createPost(post);
-        return new ResponseEntity<>(createPost, HttpStatus.CREATED);
+    public Post createPost(@RequestBody Post post) {
+        return postModifier.createPost(post);
     }
 
     @PutMapping(path = "/{postId}")
     public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody Post post) {
-        postManager.updatePost(postId, post);
+        postModifier.updatePost(postId, post);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     @DeleteMapping(path = "/{postId}")
     public ResponseEntity<Post> deletePost(@PathVariable Long postId) {
-        postManager.deletePost(postId);
-        cachedReadCountProvider.remove(postId);
+        postModifier.deletePost(postId);
+        cachedReadCountProvider.invalidate(postId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

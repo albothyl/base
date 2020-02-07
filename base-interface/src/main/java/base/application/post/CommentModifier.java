@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CommentManager {
+public class CommentModifier {
     private final CommentRepository commentRepository;
 
     public Comment createComment(Comment comment) {
