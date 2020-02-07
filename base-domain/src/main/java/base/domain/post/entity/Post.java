@@ -25,9 +25,7 @@ public class Post extends CreatedAndModifiedEntity {
     @Enumerated(EnumType.STRING)
     private BoardType boardType;
 
-    @ManyToOne
-    @JoinColumn(name = "memberId", nullable = false)
-    private Member member;
+    private Long memberId;
 
     private String title;
 
@@ -36,7 +34,7 @@ public class Post extends CreatedAndModifiedEntity {
     private long readCount;
 
     @JoinColumn(name = "postId")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     public void update(Post post) {

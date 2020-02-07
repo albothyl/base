@@ -4,20 +4,24 @@ import lombok.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-@Getter
-@Builder
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class CachedPostReadCount {
-    private String key;
-    private AtomicLong count;
+    private Long postId;
+    private AtomicLong count = new AtomicLong(0);
 
-    public Long increaseCount(){
+    public CachedPostReadCount(Long postId) {
+        this.postId = postId;
+    }
+
+    public Long increaseCount() {
         return count.incrementAndGet();
     }
 
-    public Long getCount(){
+    public Long getPostId() {
+        return postId;
+    }
+
+    public Long getCount() {
         return count.get();
     }
 }
