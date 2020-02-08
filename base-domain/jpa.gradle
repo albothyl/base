@@ -6,7 +6,8 @@ dependencies {
     annotationProcessor(
             "com.querydsl:querydsl-apt:${queryDslVersion}:jpa",
             "org.hibernate:hibernate-jpamodelgen:${hibernateVersion}",
-            "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaApiVersion}"
+            "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaApiVersion}",
+            "javax.annotation:javax.annotation-api:${javaxAnnotationVersion}"
     )
 }
 
