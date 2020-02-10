@@ -11,22 +11,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberChanger {
+public class MemberModifier {
 
     private final MemberFinder memberFinder;
 
-    public void changePassword(final Long id, final String newPassword) {
-        final Member member = memberFinder.findMemberById(id)
-                .orElseThrow(
-                        () -> new MemberNotFoundException("member is not found")
-                );
+    public void changePassword(final Long memberId, final String newPassword) {
+        Member member = memberFinder.findMemberById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
 
         final String currentPassword = member.getMemberPassword();
 
-        if(StringUtils.equals(currentPassword, newPassword)) {
-            throw new MemberPasswordEqualException("new password and exist password are equal");
-        }
+        checkPasswordEqual(currentPassword, newPassword);
 
         member.changePassword(newPassword);
+    }
+
+    private void checkPasswordEqual(String currentPassword, String newPassword) {
+        if(StringUtils.equals(currentPassword, newPassword)) {
+            throw new MemberPasswordEqualException();
+        }
     }
 }

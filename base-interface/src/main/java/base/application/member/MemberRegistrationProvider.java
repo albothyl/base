@@ -1,7 +1,7 @@
 package base.application.member;
 
 import base.domain.member.entity.Member;
-import base.domain.member.exception.MemberDuplicatedException;
+import base.application.member.exception.MemberDuplicatedException;
 import base.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,9 +19,7 @@ public class MemberRegistrationProvider {
     }
 
     private void validateMemberEmail(String memberEmail) {
-        boolean exists = memberRepository.existsByMemberEmail(memberEmail);
-
-        if(exists) {
+        if(memberRepository.existsByMemberEmail(memberEmail)) {
             throw new MemberDuplicatedException(memberEmail);
         }
     }

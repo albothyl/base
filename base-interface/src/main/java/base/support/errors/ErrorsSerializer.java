@@ -10,6 +10,11 @@ import org.springframework.validation.Errors;
 
 import java.io.IOException;
 
+/*
+@JsonComponent
+
+커스텀 Serializer를 ObjectMapper 의 Module에 등록시켜주는 역할
+ */
 @JsonComponent
 @Slf4j
 public class ErrorsSerializer extends JsonSerializer<Errors> {
@@ -18,13 +23,18 @@ public class ErrorsSerializer extends JsonSerializer<Errors> {
     public void serialize(Errors errors, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartArray();
 
+        writeFiledError(errors, gen);
+        writeGlobalError(errors, gen);
+
+        gen.writeEndArray();
+    }
+
+    private void writeFiledError(Errors errors, JsonGenerator gen) {
         errors.getFieldErrors().forEach(e -> {
             try {
                 gen.writeStartObject();
 
-                gen.writeStringField(ErrorsProperty.FIELD.getPropertyName(), e.getField());
-                gen.writeStringField(ErrorsProperty.OBJECT_NAME.getPropertyName(), e.getObjectName());
-                gen.writeStringField(ErrorsProperty.CODE.getPropertyName(), e.getCode());
+                writeCommonErrors(gen, ErrorsProperty.FIELD, e.getField(), ErrorsProperty.OBJECT_NAME, e.getObjectName(), ErrorsProperty.CODE, e.getCode());
                 gen.writeStringField(ErrorsProperty.DEFAULT_MESSAGE.getPropertyName(), e.getDefaultMessage());
 
                 Object rejectedValue = e.getRejectedValue();
@@ -38,21 +48,25 @@ public class ErrorsSerializer extends JsonSerializer<Errors> {
                 throw new ErrorsSerializerException(exception);
             }
         });
+    }
 
+    private void writeCommonErrors(JsonGenerator gen, ErrorsProperty objectName, String objectName2, ErrorsProperty code, String code2, ErrorsProperty defaultMessage, String defaultMessage2) throws IOException {
+        gen.writeStringField(objectName.getPropertyName(), objectName2);
+        gen.writeStringField(code.getPropertyName(), code2);
+        gen.writeStringField(defaultMessage.getPropertyName(), defaultMessage2);
+    }
+
+    private void writeGlobalError(Errors errors, JsonGenerator gen) {
         errors.getGlobalErrors().forEach(e -> {
             try {
                 gen.writeStartObject();
 
-                gen.writeStringField(ErrorsProperty.OBJECT_NAME.getPropertyName(), e.getObjectName());
-                gen.writeStringField(ErrorsProperty.CODE.getPropertyName(), e.getCode());
-                gen.writeStringField(ErrorsProperty.DEFAULT_MESSAGE.getPropertyName(), e.getDefaultMessage());
+                writeCommonErrors(gen, ErrorsProperty.OBJECT_NAME, e.getObjectName(), ErrorsProperty.CODE, e.getCode(), ErrorsProperty.DEFAULT_MESSAGE, e.getDefaultMessage());
 
                 gen.writeEndObject();
             } catch (IOException exception) {
                 throw new ErrorsSerializerException(exception);
             }
         });
-
-        gen.writeEndArray();
     }
 }

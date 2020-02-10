@@ -5,5 +5,5 @@ import java.util.Optional;
 
 public interface MemberRepositoryCustom {
 
-  Optional<Member> findByMemberEmailUsingQuerydsl(String memberEmail);
+  Optional<Member> findByMemberEmailUsingQuerydsl(final String memberEmail);
 }

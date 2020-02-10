@@ -9,13 +9,13 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 @SpringBootTest
-//@Transactional //rollback
 class MemberRepositoryTest extends Specification {
 
 	@Autowired
     MemberRepository memberRepository
 
-	@Shared def enhancedRandom
+	@Shared
+	def enhancedRandom
 
 	def setupSpec() {
 		enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()

@@ -1,6 +1,7 @@
 package base.domain.support.exception;
 
-public class InvalidValueException extends DomainLayerException {
+public class InvalidValueException extends BusinessException
+{
 
     public InvalidValueException(String msg) {
         super(msg);

@@ -1,6 +1,6 @@
 package base.interfaces.member.dto;
 
-import base.support.validator.PhoneNum;
+import base.support.validator.PhoneNumber;
 import lombok.*;
 
 import javax.validation.constraints.*;
@@ -32,6 +32,6 @@ public class SignUpMember {
     @NotEmpty
     private String memberAddress;
 
-    @PhoneNum
+    @PhoneNumber
     private String memberPhoneNumber;
 }

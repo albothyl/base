@@ -1,6 +1,6 @@
 package base.interfaces;
 
-import base.domain.support.exception.DomainLayerException;
+import base.domain.support.exception.BusinessException;
 import base.support.errors.exception.ErrorsSerializerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +25,8 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.badRequest().body(message);
 	}
 
-	@ExceptionHandler(DomainLayerException.class)
-	public String handleDomainException(DomainLayerException e) {
+	@ExceptionHandler(BusinessException.class)
+	public String handleDomainException(BusinessException e) {
 		log.error("DomainLayerException : {}", e.getMessage(), e);
 		return e.getMessage();
 	}
