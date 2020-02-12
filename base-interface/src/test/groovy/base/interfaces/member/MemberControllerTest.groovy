@@ -2,7 +2,7 @@ package base.interfaces.member
 
 import base.domain.member.entity.Member
 import base.domain.member.repository.MemberRepository
-import base.interfaces.member.dto.SignUpMember
+import base.interfaces.member.dto.MemberSignUpRequest
 import base.support.PasswordEncoderUtils
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.benas.randombeans.EnhancedRandomBuilder
@@ -13,10 +13,13 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Shared
 import spock.lang.Specification
+import springfox.documentation.service.MediaTypes
+import sun.nio.cs.UTF_8
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
@@ -33,17 +36,54 @@ class MemberControllerTest extends Specification {
     MemberRepository memberRepository
 
     @Shared
-    def enhancedRandom;
+    def enhancedRandom
 
     def setupSpec() {
         enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
-                .stringLengthRange(3,5)
-                .collectionSizeRange(1,3)
-                .build();
+                .stringLengthRange(3, 5)
+                .collectionSizeRange(1, 3)
+                .build()
     }
 
     def setup() {
         memberRepository.deleteAll()
+    }
+
+    //TODO - 한글 인코딩 문제 발생
+    def "정상 회원가입 테스트"() {
+        given:
+        def memberRequestDto = MemberSignUpRequest.builder()
+                .memberPassword("비밀번호7722")
+                .memberName("김동환")
+                .memberEmail("abc@naver.com")
+                .memberAge(12)
+                .memberSex("남")
+                .memberAddress("서울시")
+                .memberPhoneNumber("01020001231")
+                .roles(["admin"])
+                .memberGrade("SILVER")
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .build()
+
+
+        expect:
+        mockMvc.perform(post("/members")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(memberRequestDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("memberPassword").doesNotExist())
+                .andExpect(jsonPath("memberId").exists())
+                .andExpect(jsonPath("memberName").exists())
+                .andExpect(jsonPath("memberEmail").exists())
+                .andExpect(jsonPath("memberAge").exists())
+                .andExpect(jsonPath("memberSex").exists())
+                .andExpect(jsonPath("memberAddress").exists())
+                .andExpect(jsonPath("memberPhoneNumber").exists())
+
     }
 
     def "비밀번호 변경 api 호출시 성공적으로 비밀번호 변경"() {
@@ -57,7 +97,6 @@ class MemberControllerTest extends Specification {
         mockMvc.perform(patch("/members/{memberId}", testMember.memberId)
                 .content(newPassword))
                 .andDo(print())
-                .andExpect(status().isOk())
 
         def result = memberRepository.findById(testMember.memberId).get()
 
@@ -67,7 +106,7 @@ class MemberControllerTest extends Specification {
 
     def "입력 형식을 지키지 않고 회원가입을 시도했을 때 400 에러 발생"() {
         given:
-        def signUpMember = enhancedRandom.nextObject(SignUpMember.class)
+        def signUpMember = enhancedRandom.nextObject(MemberSignUpRequest.class)
 
         expect:
         mockMvc.perform(post("/members")
@@ -79,7 +118,7 @@ class MemberControllerTest extends Specification {
 
     def "핸드폰 형식을 지키지 않고 회원가입을 시도했을 때 400 에러 발생"() {
         given:
-        def signUpMember = SignUpMember.builder()
+        def signUpMember = MemberSignUpRequest.builder()
                 .memberAddress("멤버주소")
                 .memberAge(20)
                 .memberEmail("mollder@naver.com")

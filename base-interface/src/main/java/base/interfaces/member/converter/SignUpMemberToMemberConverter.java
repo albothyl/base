@@ -1,7 +1,7 @@
 package base.interfaces.member.converter;
 
 import base.domain.member.entity.Member;
-import base.interfaces.member.dto.SignUpMember;
+import base.interfaces.member.dto.MemberSignUpRequest;
 import base.support.PasswordEncoderUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -9,21 +9,21 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @Component
-public class SignUpMemberToMemberConverter implements Converter<SignUpMember, Member> {
+public class SignUpMemberToMemberConverter implements Converter<MemberSignUpRequest, Member> {
 
     @Override
-    public Member convert(SignUpMember signUpMember) {
-        String encodePassword = PasswordEncoderUtils.passwordEncode(signUpMember.getMemberPassword());
+    public Member convert(MemberSignUpRequest memberSignUpRequest) {
+        String encodePassword = PasswordEncoderUtils.passwordEncode(memberSignUpRequest.getMemberPassword());
 
         return Member.builder()
-                .memberName(signUpMember.getMemberName())
-                .memberAddress(signUpMember.getMemberAddress())
-                .memberAge(signUpMember.getMemberAge())
-                .memberEmail(signUpMember.getMemberEmail())
+                .memberName(memberSignUpRequest.getMemberName())
+                .memberAddress(memberSignUpRequest.getMemberAddress())
+                .memberAge(memberSignUpRequest.getMemberAge())
+                .memberEmail(memberSignUpRequest.getMemberEmail())
                 .memberGrade("default")
                 .memberPassword(encodePassword)
-                .memberPhoneNumber(signUpMember.getMemberPhoneNumber())
-                .memberSex(signUpMember.getMemberSex())
+                .memberPhoneNumber(memberSignUpRequest.getMemberPhoneNumber())
+                .memberSex(memberSignUpRequest.getMemberSex())
                 .credentialsNonExpired(true)
                 .accountNonExpired(true)
                 .accountNonLocked(true)
