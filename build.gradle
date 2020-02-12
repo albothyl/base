@@ -45,6 +45,7 @@ ext {
 // Interface =================================
 	swaggerVersion = '2.9.2'
 	springSecurityTestVersion = '5.2.0.RELEASE'
+	modelMapper = '2.3.6'
 
 // Domain ====================================
 	mysqlConnectorVersion = '8.0.18'
