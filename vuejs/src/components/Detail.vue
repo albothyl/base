@@ -9,7 +9,7 @@
                         <label for="input-none">순서 :</label>
                         </b-col>
                         <b-col sm="10">
-                            {{board.seq}}
+                            {{board.postId}}
                         </b-col>
                     </b-row>
                     <b-row class="my-1">
@@ -25,13 +25,13 @@
                         <label for="input-none">내용 :</label>
                         </b-col>
                         <b-col sm="10">
-                            <b-form-textarea v-model="board.content"/>
+                            <b-form-textarea v-model="board.contents"/>
                         </b-col>
                     </b-row>
                     <b-row class="my-1">
                         <b-col sm="12">
-                            <button v-on:click="updateBoard">수정</button>
-                            <button v-on:click="deleteBoard(board.seq)">삭제</button>
+                            <button v-on:click="updateBoard(board.postId)">수정</button>
+                            <button v-on:click="deleteBoard(board.postId)">삭제</button>
                         </b-col>
                     </b-row>
                 </b-col>
@@ -45,15 +45,15 @@ export default {
     data() {
         return {
             board:{
-                seq:'',
+                postId:'',
                 title:'',
-                content:''
+                contents:''
             }
         }
     },
     created() {
-        const seq = this.$route.params.seq
-        this.$http.get(`/boards/${seq}`, {
+        const postId = this.$route.params.postId
+        this.$http.get(`/posts/${postId}`, {
                 headers: {
                     Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
                 }
@@ -66,18 +66,21 @@ export default {
         })
     },
     methods: {
-        updateBoard() {
-            this.$http.put('/boards',{
-                seq: this.board.seq,
+        updateBoard(postId) {
+            this.$http.put(`/posts/${postId}`,{
 			    title: this.board.title,
-                content: this.board.content
+                contents: this.board.contents,
+                boardType: 'FREE',
+                member: {
+                    memberId:6,
+                }
 		    },
             {
                 headers: {
                     Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
                 }
 		    }).then((response) => {
-                if(response.data === 'OK'){
+                if(response.data !== null){
                     alert('수정 성공!')
                     console.log('update success')
                 } else {
@@ -89,18 +92,18 @@ export default {
                 console.log(error)
             })
         },
-        deleteBoard(seq) {
-            this.$http.delete(`/boards/${seq}`,{
+        deleteBoard(postId) {
+            this.$http.delete(`/posts/${postId}`,{
                 headers: {
                     Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
                 }
 		    }).then((response) => {
                 console.log(response)
-                if(response.data === 'OK'){
+                if(response.data !== null){
                     alert('삭제 성공!')
                     console.log('delete success')
                     this.$router.push({
-                        path:'/boards'
+                        path:'/posts'
                     })
                 } else {
                     alert('삭제 실패!')

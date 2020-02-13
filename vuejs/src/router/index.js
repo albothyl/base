@@ -19,7 +19,7 @@ export default new Router({
       }
     },
     {
-      path: '/boards',
+      path: '/posts',
       name: 'BoardList',
       component: BoardList,
       meta: {
@@ -27,7 +27,7 @@ export default new Router({
       }
     },
     {
-      path: '/insertBoard',
+      path: '/insertPost',
       name: 'WriteBoard',
       component: WriteBoard,
       meta: {
@@ -35,7 +35,7 @@ export default new Router({
       }
     },
     {
-      path: '/detail/:seq',
+      path: '/detail/:postId',
       name: 'Detail',
       component: Detail,
       meta: {
