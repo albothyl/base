@@ -1,4 +1,4 @@
-package base.interfaces.member.validator;
+package base.support.validator;
 
 import org.hibernate.validator.constraints.CompositionType;
 import org.hibernate.validator.constraints.ConstraintComposition;
@@ -16,10 +16,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ METHOD, FIELD})
 @Retention(RUNTIME)
 @Constraint(validatedBy = PhoneNumberValidator.class)
-public @interface PhoneNum {
-    public abstract String message() default "핸드폰은 10자리, 11자리 숫자로만 입력해야 합니다.";
+public @interface PhoneNumber
+{
+    String message() default "핸드폰은 10자리, 11자리 숫자로만 입력해야 합니다.";
 
-    public abstract Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-    public abstract Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }

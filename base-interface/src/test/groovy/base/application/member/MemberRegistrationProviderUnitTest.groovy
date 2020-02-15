@@ -1,13 +1,13 @@
 package base.application.member
 
 import base.domain.member.entity.Member
-import base.domain.member.exception.MemberDuplicatedException
+import base.application.member.exception.MemberDuplicatedException
 import base.domain.member.repository.MemberRepository
 import io.github.benas.randombeans.EnhancedRandomBuilder
 import spock.lang.Shared
 import spock.lang.Specification
 
-class MemberSignManagerUnitTest extends Specification {
+class MemberRegistrationProviderUnitTest extends Specification {
 
     def memberRepository
     def memberSignManager
@@ -27,7 +27,7 @@ class MemberSignManagerUnitTest extends Specification {
         memberRepository = Stub(MemberRepository.class)
         memberRepository.existsByMemberEmail(member.memberEmail) >> true
 
-        memberSignManager = new MemberSignManager(memberRepository)
+        memberSignManager = new MemberRegistrationProvider(memberRepository)
 
         when:
         memberSignManager.signUp(member)

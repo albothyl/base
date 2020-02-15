@@ -1,8 +1,12 @@
 package base.domain.member.exception;
 
-public class MemberPasswordEqualException extends RuntimeException {
+import base.domain.support.exception.InvalidValueException;
 
-  public MemberPasswordEqualException(String msg) {
-    super(msg);
+public class MemberPasswordEqualException extends InvalidValueException {
+
+  private static final String MESSAGE = "new password and exist password are equal";
+
+  public MemberPasswordEqualException() {
+    super(MESSAGE);
   }
 }

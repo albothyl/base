@@ -1,15 +1,14 @@
-package base.interfaces.member.validator;
+package base.support.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PhoneNumberValidator implements ConstraintValidator<PhoneNum, String> {
-
+public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
 
     @Override
-    public void initialize(PhoneNum constraintAnnotation) {
+    public void initialize(PhoneNumber constraintAnnotation) {
 
     }
 
