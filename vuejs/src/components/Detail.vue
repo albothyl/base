@@ -34,6 +34,16 @@
                             <button v-on:click="deleteBoard(board.postId)">삭제</button>
                         </b-col>
                     </b-row>
+                    <b-row class="my-1">
+                        <b-col sm="12">
+                            <b-card class="text-center" v-for="(item, index) in comments" :key="item.commentId">
+                                <div class="bg-secondary text-light" align="left">
+                                    <div>{{item.contents}}</div>
+                                    <div>{{moment(item.modifiedAt).format('YYYY-MM-DD hh:mm:ss')}}</div>
+                                </div>
+                            </b-card>
+                        </b-col>
+                    </b-row>
                 </b-col>
             </b-row>
         </b-container>
@@ -48,7 +58,8 @@ export default {
                 postId:'',
                 title:'',
                 contents:''
-            }
+            },
+            comments: []
         }
     },
     created() {
@@ -60,6 +71,7 @@ export default {
 		}).then((response) => {
             console.log(response)
             this.board = response.data
+            this.comments = response.data.comments
         }).catch(error => {
             alert('글조회 실패! '+error)
             console.log(error)
