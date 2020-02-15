@@ -3,6 +3,7 @@ package base.application.post
 import base.domain.post.PostRepository
 import base.domain.post.cache.CachedPostReadCount
 import base.domain.post.entity.Post
+import com.google.common.collect.ImmutableMap
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 import spock.lang.Specification
@@ -31,19 +32,21 @@ class CachedReadCountThreadTests extends Specification {
 
         when:
         postRepository.findById(postId) >> Optional.ofNullable(post)
+
         and:
         (1..loop).each {
             executor.execute({
-                Optional<CachedPostReadCount> cachedReadCount = cachedReadCountProvider.get(postId)
-                cachedReadCount.get().increaseCount()
+                cachedReadCountProvider.increaseCount(postId)
                 latch.countDown()
             } as Runnable)
         }
         latch.await()
 
+        ImmutableMap<Long, CachedPostReadCount> map = cachedReadCountProvider.getAll()
+        def result = map.get(post.getPostId()).getCount()
+
         then:
-        long getCount = cachedReadCountProvider.get(postId).get().getCount()
-        and:
-        getCount == loop
+        result == loop
+
     }
 }

@@ -1,7 +1,7 @@
 package base.domain.post;
 
-import base.domain.member.repository.MemberRepository;
 import base.domain.member.entity.Member;
+import base.domain.member.repository.MemberRepository;
 import base.domain.post.constants.BoardType;
 import base.domain.post.entity.Comment;
 import base.domain.post.entity.Post;
@@ -46,26 +46,20 @@ public class PostRepositoryTests {
                 .collectionSizeRange(1,3)
                 .build();
 
-        Member member = builder.nextObject(Member.class, "memberId");
-
         Post post = Post.builder()
                 .boardType(BoardType.NOTICE)
-                .member(member)
                 .title("공지사항")
                 .contents("내용")
                 .build();
 
 
         //when
-        Member savedMember = memberRepository.save(member);
         Post savedPost = postRepository.save(post);
 
         //then
-        assertThat(savedMember).isNotNull();
         assertThat(savedPost).isNotNull();
         assertThat(savedPost.getTitle()).isEqualTo(post.getTitle());
         assertThat(savedPost.getContents()).isEqualTo(post.getContents());
-        assertThat(savedPost.getMember().getMemberName()).isEqualTo(member.getMemberName());
     }
 
     @Test
@@ -78,22 +72,18 @@ public class PostRepositoryTests {
                 .collectionSizeRange(1,3)
                 .build();
 
-        Member member = builder.nextObject(Member.class, "memberId");
 
         Post post = Post.builder()
                 .boardType(BoardType.NOTICE)
-                .member(member)
                 .title("공지사항")
                 .contents("내용")
                 .build();
 
         //when
-        Member savedMember = memberRepository.save(member);
         Post savedPost = postRepository.save(post);
 
         for(int i=0; i<10; i++){
             Comment comment  = Comment.builder()
-                    .member(member)
                     .postId(savedPost.getPostId())
                     .contents("댓글" + i)
                     .build();
@@ -102,11 +92,9 @@ public class PostRepositoryTests {
 
         Post fetchJoinPost = postRepository.findByIdWithComments(post.getPostId());
         //then
-        assertThat(savedMember).isNotNull();
         assertThat(savedPost).isNotNull();
         assertThat(fetchJoinPost).isNotNull();
         assertThat(fetchJoinPost.getPostId()).isEqualTo(savedPost.getPostId());
-        assertThat(fetchJoinPost.getMember().getMemberId()).isEqualTo(savedMember.getMemberId());
         assertThat(fetchJoinPost.getComments()).hasSize(10);
     }
 
@@ -124,13 +112,11 @@ public class PostRepositoryTests {
 
         Post post = Post.builder()
                 .boardType(BoardType.NOTICE)
-                .member(member)
                 .title("공지사항")
                 .contents("내용")
                 .build();
 
         Comment comment  = Comment.builder()
-                .member(member)
                 .postId(post.getPostId())
                 .contents("댓글")
                 .build();

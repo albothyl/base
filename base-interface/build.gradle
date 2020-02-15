@@ -2,7 +2,6 @@ dependencies {
 	api(project(':base-domain'))
 
 	api(
-			"org.springframework.boot:spring-boot-starter-quartz:${springBootVersion}",
 			"io.springfox:springfox-swagger2:${swaggerVersion}",
 			"io.springfox:springfox-swagger-ui:${swaggerVersion}"
 	)
