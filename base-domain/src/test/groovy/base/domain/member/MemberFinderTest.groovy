@@ -10,7 +10,10 @@ import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
+import javax.transaction.Transactional
+
 @SpringBootTest
+@Transactional
 class MemberFinderTest extends Specification {
 
     @Autowired
@@ -44,9 +47,10 @@ class MemberFinderTest extends Specification {
             memberEmail == saveMember.memberEmail
             memberAge == saveMember.memberAge
             memberSex == saveMember.memberSex
-            memberAddress == saveMember.memberAddress
             memberPhoneNumber == saveMember.memberPhoneNumber
-            memberGrade == saveMember.memberGrade
+            memberAddress.city == saveMember.memberAddress.city
+            memberAddress.street == saveMember.memberAddress.street
+            memberAddress.zipCode == saveMember.memberAddress.zipCode
         }
     }
 
@@ -67,7 +71,6 @@ class MemberFinderTest extends Specification {
             memberSex == saveMember.memberSex
             memberAddress == saveMember.memberAddress
             memberPhoneNumber == saveMember.memberPhoneNumber
-            memberGrade == saveMember.memberGrade
         }
     }
 
@@ -87,7 +90,6 @@ class MemberFinderTest extends Specification {
             memberSex == saveMember.memberSex
             memberAddress == saveMember.memberAddress
             memberPhoneNumber == saveMember.memberPhoneNumber
-            memberGrade == saveMember.memberGrade
         }
     }
 }

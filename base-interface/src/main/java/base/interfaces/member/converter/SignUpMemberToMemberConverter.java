@@ -20,14 +20,9 @@ public class SignUpMemberToMemberConverter implements Converter<MemberSignUpRequ
                 .memberAddress(memberSignUpRequest.getMemberAddress())
                 .memberAge(memberSignUpRequest.getMemberAge())
                 .memberEmail(memberSignUpRequest.getMemberEmail())
-                .memberGrade("default")
                 .memberPassword(encodePassword)
                 .memberPhoneNumber(memberSignUpRequest.getMemberPhoneNumber())
                 .memberSex(memberSignUpRequest.getMemberSex())
-                .credentialsNonExpired(true)
-                .accountNonExpired(true)
-                .accountNonLocked(true)
-                .enabled(true)
                 .roles(Arrays.asList("USER"))
                 .build();
     }

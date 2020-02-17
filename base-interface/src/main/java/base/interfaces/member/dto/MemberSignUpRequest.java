@@ -1,17 +1,18 @@
 package base.interfaces.member.dto;
 
-import base.domain.support.entity.MemberDetails;
+import base.domain.member.entity.Address;
 import base.support.validator.PhoneNumber;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
-import java.util.List;
 
 @Getter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class MemberSignUpRequest extends MemberDetails {
+public class MemberSignUpRequest {
 
     @NotBlank(message = "Please enter your password.")
     @Size(min = 8)
@@ -32,27 +33,10 @@ public class MemberSignUpRequest extends MemberDetails {
     private String memberSex;
 
     @NotEmpty
-    private String memberAddress;
+    private Address memberAddress;
 
     @PhoneNumber
     private String memberPhoneNumber;
-
-    private String memberGrade;
-
-    @Builder
-    private MemberSignUpRequest(String memberPassword, String memberName, String memberEmail,
-                                Integer memberAge, String memberSex, String memberAddress, String memberPhoneNumber, String memberGrade,
-                                List<String> roles, Boolean accountNonExpired, Boolean accountNonLocked, Boolean credentialsNonExpired, Boolean enabled) {
-        super(roles, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled);
-        this.memberPassword = memberPassword;
-        this.memberName = memberName;
-        this.memberEmail = memberEmail;
-        this.memberAge = memberAge;
-        this.memberSex = memberSex;
-        this.memberAddress = memberAddress;
-        this.memberPhoneNumber = memberPhoneNumber;
-        this.memberGrade = memberGrade;
-    }
 
 
 }

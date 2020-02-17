@@ -15,6 +15,5 @@ public class MemberSingUpResponse {
     private String memberSex;
     private String memberAddress;
     private String memberPhoneNumber;
-    private String memberGrade;
 
 }
