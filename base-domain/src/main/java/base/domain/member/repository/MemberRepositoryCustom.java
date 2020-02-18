@@ -1,9 +1,11 @@
 package base.domain.member.repository;
 
 import base.domain.member.entity.Member;
-import java.util.Optional;
+
+import java.util.List;
 
 public interface MemberRepositoryCustom {
 
-  Optional<Member> findByMemberEmailUsingQuerydsl(final String memberEmail);
+  List<Member> findByDormantMember();
+
 }

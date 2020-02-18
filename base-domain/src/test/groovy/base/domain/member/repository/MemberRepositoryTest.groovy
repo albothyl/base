@@ -8,29 +8,21 @@ import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
+import javax.transaction.Transactional
+
 @SpringBootTest
+@Transactional
 class MemberRepositoryTest extends Specification {
 
 	@Autowired
     MemberRepository memberRepository
 
 	@Shared
-	def enhancedRandom
-
-	def setupSpec() {
-		enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
+	def enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
 							.stringLengthRange(3, 5)
 							.collectionSizeRange(3, 5)
 							.build()
-	}
 
-	def setup() {
-		memberRepository.deleteAll()
-	}
-
-	def cleanup() {
-		memberRepository.deleteAll()
-	}
 
 	def "member email exist method test"() {
 		given:
@@ -45,25 +37,51 @@ class MemberRepositoryTest extends Specification {
 		exists
 	}
 
+	def "MemberRepository findyByEmail 테스트"(){
+		given:
+		def member = enhancedRandom.nextObject(Member.class, "memberId")
+		def savedMember = memberRepository.save(member)
+
+		when:
+		def result = memberRepository.findByMemberEmail(savedMember.memberEmail)
+
+		then:
+		result.get() != null
+		with(result.get()){
+			memberPassword == member.memberPassword
+			memberName == member.memberName
+			memberEmail == member.memberEmail
+			memberAge == member.memberAge
+			memberSex == member.memberSex
+			memberPhoneNumber == member.memberPhoneNumber
+			memberAddress == member.memberAddress
+			roles.size() == member.roles.size()
+			account == member.account
+			memberAddress == member.memberAddress
+		}
+
+	}
+
+	def "member queryDsl 휴먼계정 조회 테스트"(){
+		given:
+		(1..10).each {
+			def member = enhancedRandom.nextObject(Member.class)
+			memberRepository.save(member)
+		}
+
+		when:
+		List<Member> resultList = memberRepository.findByDormantMember()
+
+		then:
+		resultList.size()>0
+	}
+
+
 	@Ignore
 	def "member save test"() {
 		given:
 
-		def member = Member.builder()
-				.memberPassword("{bcrypt}\$2a\$10\$bX1r6QoadC9c/AMdORDVnuLW4d4e3bUQKZk0MMBhvj/wj2X6CKiJa")
-				.memberName("admin")
-				.memberEmail("admin@naver.com")
-				.memberAge(20)
-				.memberSex("MALE")
-				.memberAddress("korea")
-				.memberPhoneNumber("010-1234-1234")
-				.memberGrade("GOLD")
-				.roles(["ADMIN"])
-				.accountNonExpired(true)
-				.accountNonLocked(true)
-				.credentialsNonExpired(true)
-				.enabled(true)
-				.build()
+		def member = enhancedRandom.nextObject(Member.class, "memberId")
 
 
 		when:
@@ -79,13 +97,8 @@ class MemberRepositoryTest extends Specification {
 			memberSex == member.memberSex
 			memberAddress == member.memberAddress
 			memberPhoneNumber == member.memberPhoneNumber
-			memberGrade == member.memberGrade
 
 			roles.get(0) == member.roles.get(0)
-			accountNonExpired == member.accountNonExpired
-			accountNonLocked == member.accountNonLocked
-			credentialsNonExpired == member.credentialsNonExpired
-			enabled == member.enabled
 
 			createdAt == member.createdAt
 			modifiedAt == member.modifiedAt
