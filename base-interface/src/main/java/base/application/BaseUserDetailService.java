@@ -1,6 +1,6 @@
 package base.application;
 
-import base.domain.member.MemberFinder;
+import base.application.member.MemberFinder;
 import base.domain.member.entity.Member;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

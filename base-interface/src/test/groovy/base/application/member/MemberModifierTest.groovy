@@ -1,4 +1,4 @@
-package base.domain.member
+package base.application.member
 
 import base.domain.member.entity.Member
 import base.domain.member.exception.MemberNotFoundException

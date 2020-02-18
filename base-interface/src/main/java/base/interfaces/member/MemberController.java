@@ -1,7 +1,7 @@
 package base.interfaces.member;
 
 import base.application.member.MemberRegistrationProvider;
-import base.domain.member.MemberModifier;
+import base.application.member.MemberModifier;
 import base.domain.member.entity.Member;
 import base.interfaces.member.dto.MemberSignUpRequest;
 import base.interfaces.member.dto.MemberSingUpResponse;
