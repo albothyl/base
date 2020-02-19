@@ -9,12 +9,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static base.configuration.SpringSecurityConfig.ROLE_PREFIX;
 
 @Service
+@Transactional
 public class BaseUserDetailService implements UserDetailsService {
 
 	private MemberFinder memberFinder;
@@ -25,8 +27,7 @@ public class BaseUserDetailService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		final Member member = memberFinder.findMemberByEmail(email).orElseThrow(
-			() -> new IllegalArgumentException(email + " is not founded"));
+		final Member member = memberFinder.findByMemberEmail(email);
 
 		final List<SimpleGrantedAuthority> authorities = member.getRoles().stream()
 			.map(role -> new SimpleGrantedAuthority(ROLE_PREFIX + role))

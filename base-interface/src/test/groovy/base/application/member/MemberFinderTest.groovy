@@ -1,6 +1,7 @@
 package base.application.member
 
 import base.domain.member.entity.Member
+import base.domain.member.exception.MemberNotFoundException
 import base.domain.member.repository.MemberRepository
 import base.domain.member.repository.MemberSpecs
 import io.github.benas.randombeans.EnhancedRandomBuilder
@@ -17,6 +18,9 @@ import javax.transaction.Transactional
 class MemberFinderTest extends Specification {
 
     @Autowired
+    MemberFinder memberFinder
+
+    @Autowired
     MemberRepository memberRepository
 
     @Shared
@@ -29,20 +33,16 @@ class MemberFinderTest extends Specification {
                 .build()
     }
 
-    def setup() {
-        memberRepository.deleteAll()
-    }
-
     def "member find test"() {
         given:
         def member = enhancedRandom.nextObject(Member.class, "memberId")
         def saveMember = memberRepository.save(member)
 
         when:
-        def result = memberRepository.findByMemberEmail(saveMember.memberEmail)
+        def result = memberFinder.findByMemberEmail(saveMember.memberEmail)
 
         then:
-        with(result.get()) {
+        with(result) {
             memberName == saveMember.memberName
             memberEmail == saveMember.memberEmail
             memberAge == saveMember.memberAge
@@ -54,42 +54,16 @@ class MemberFinderTest extends Specification {
         }
     }
 
-    @Ignore
-    def "member find test using querydsl"() {
-        given:
-        def member = enhancedRandom.nextObject(Member.class, "memberId")
-        def saveMember = memberRepository.save(member)
-
+    def "member not found exception"() {
         when:
-        def result = memberRepository.findByMemberEmailUsingQuerydsl(saveMember.memberEmail)
+        memberFinder.findByMemberEmail("exception")
 
         then:
-        with(result.get()) {
-            memberName == saveMember.memberName
-            memberEmail == saveMember.memberEmail
-            memberAge == saveMember.memberAge
-            memberSex == saveMember.memberSex
-            memberAddress == saveMember.memberAddress
-            memberPhoneNumber == saveMember.memberPhoneNumber
-        }
+        def e = thrown(MemberNotFoundException.class)
+        e.getMessage() == "member is not found"
     }
 
-    def "member find test using criteria spec"() {
-        given:
-        def member = enhancedRandom.nextObject(Member.class, "memberId")
-        def saveMember = memberRepository.save(member)
 
-        when:
-        def result = memberRepository.findOne(MemberSpecs.findMemberByMemberEmail(saveMember.memberEmail))
 
-        then:
-        with(result.get()) {
-            memberName == saveMember.memberName
-            memberEmail == saveMember.memberEmail
-            memberAge == saveMember.memberAge
-            memberSex == saveMember.memberSex
-            memberAddress == saveMember.memberAddress
-            memberPhoneNumber == saveMember.memberPhoneNumber
-        }
-    }
+
 }

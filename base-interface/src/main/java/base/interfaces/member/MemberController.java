@@ -1,6 +1,6 @@
 package base.interfaces.member;
 
-import base.application.member.MemberRegistrationProvider;
+import base.application.member.MemberRegister;
 import base.application.member.MemberModifier;
 import base.domain.member.entity.Member;
 import base.interfaces.member.dto.MemberSignUpRequest;
@@ -21,7 +21,7 @@ public class MemberController {
 
     private final MemberModifier memberModifier;
     private final ModelMapper modelMapper;
-    private final MemberRegistrationProvider memberRegistrationProvider;
+    private final MemberRegister memberRegister;
 
     @PatchMapping("/members/{memberId}")
     public ResponseEntity updatePassword(@PathVariable @NonNull Long memberId,
@@ -43,7 +43,7 @@ public class MemberController {
 
         Member member = modelMapper.map(memberSignUpRequest, Member.class);
 
-        Member savedMember = memberRegistrationProvider.signUp(member);
+        Member savedMember = memberRegister.signUp(member);
 
         return ResponseEntity.ok(modelMapper.map(savedMember, MemberSingUpResponse.class));
     }

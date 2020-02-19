@@ -34,6 +34,6 @@ public class SpringSecurityTestController {
 	@Secured(ROLE_PREFIX + "ADMIN")
 	@GetMapping("/base/role/admin")
 	public String admin() {
-		return memberFinder.findMemberByEmail("admin@naver.com").get().toString();
+		return memberFinder.findByMemberEmail("admin@naver.com").toString();
 	}
 }

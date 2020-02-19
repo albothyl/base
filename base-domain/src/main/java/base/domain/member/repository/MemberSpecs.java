@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class MemberSpecs {
 
-  public static Specification<Member> findMemberByMemberEmail(final String memberEmail) {
+  public static Specification<Member> findByMemberEmail(final String memberEmail) {
     return Specification
             .where(CommonSpecificationUtils.equal(Member_.memberEmail, memberEmail));
   }

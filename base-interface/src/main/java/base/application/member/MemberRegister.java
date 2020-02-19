@@ -6,9 +6,12 @@ import base.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 @RequiredArgsConstructor
-public class MemberRegistrationProvider {
+public class MemberRegister {
 
     private final MemberRepository memberRepository;
 

@@ -105,4 +105,23 @@ class MemberRepositoryTest extends Specification {
 		}
 
 	}
+
+	def "member find test using criteria spec"() {
+		given:
+		def member = enhancedRandom.nextObject(Member.class, "memberId")
+		def saveMember = memberRepository.save(member)
+
+		when:
+		def result = memberRepository.findOne(MemberSpecs.findByMemberEmail(saveMember.memberEmail))
+
+		then:
+		with(result.get()) {
+			memberName == saveMember.memberName
+			memberEmail == saveMember.memberEmail
+			memberAge == saveMember.memberAge
+			memberSex == saveMember.memberSex
+			memberAddress == saveMember.memberAddress
+			memberPhoneNumber == saveMember.memberPhoneNumber
+		}
+	}
 }
