@@ -7,7 +7,7 @@
 
         <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav>
-            <b-nav-item href="/boards">board</b-nav-item>
+            <b-nav-item href="/posts">post</b-nav-item>
             </b-navbar-nav>
 
             <!-- Right aligned nav items -->
@@ -74,6 +74,7 @@ import router from '../router'
 import { mapGetters } from 'vuex'
 import store from '../store.js'
 
+/**
 router.beforeEach((to, from, next) => {
   // to : 이동할 url
   // from : 현재 url
@@ -92,6 +93,7 @@ router.beforeEach((to, from, next) => {
   }
 
 })
+*/
 
 export default {
     name: 'main-header',

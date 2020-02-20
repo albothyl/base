@@ -9,17 +9,17 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>seq</th>
+                            <th>postId</th>
                             <th>title</th>
                             <th>content</th>
                             <th>createDate</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(item, index) in boards" :key="item.seq" @click="detail(item.seq)">
-                            <td>{{item.seq}}</td>
+                        <tr v-for="(item, index) in boards" :key="item.postId" @click="detail(item.postId)">
+                            <td>{{item.postId}}</td>
                             <td>{{item.title}}</td>
-                            <td>{{item.content}}</td>
+                            <td>{{item.contents}}</td>
                             <td>{{moment(item.createDate).format('YYYY-MM-DD hh:mm:ss')}}</td>
                         </tr>
                         </tbody>
@@ -51,12 +51,12 @@ export default {
             fields: ['seq', 'title', 'content', 'createDate'],
             page: 1,
             size: 5,
-            sort: 'seq,desc',
+            sort: 'postId,desc',
             rows: ''
         }
     },
     created() {
-        this.$http.get('/boards', {
+        this.$http.get('/posts', {
                         params: {
                             page: this.page-1,
                             size: this.size,
@@ -79,19 +79,19 @@ export default {
     methods: {
         write() {
             this.$router.push({
-                path:'insertBoard'
+                path:'insertPost'
             })
         },
         detail(index) {
             this.$router.push({
                 name:'Detail',
                 params: {
-                    seq: index
+                    postId: index
                 }
             })
         },
         changePage(requestPage) {
-            this.$http.get('/boards', {
+            this.$http.get('/posts', {
                         params: {
                             page: requestPage-1,
                             size: this.size,

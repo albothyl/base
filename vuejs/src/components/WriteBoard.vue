@@ -37,19 +37,23 @@ export default {
     methods: {
         write() {
             
-            this.$http.post('/boards',{
+            this.$http.post('/posts',{
 			    title:this.title,
-                content:this.content,
+                contents:this.content,
+                boardType: 'FREE',
+                member: {
+                    memberId:6,
+                }
             },
             {
                 headers: {
                     Authorization : this.$store.getters.token?'Bearer '+this.$store.getters.token:null
                 }
 		    }).then((response) => {
-                if(response.data === 'OK'){
+                if(response.data !== null){
                     console.log('success')
                     this.$router.push({
-                        path:'boards'
+                        path:'posts'
                     })
                 } else {
                     console.log('failed')

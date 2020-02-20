@@ -36,7 +36,7 @@ public class Post extends CreatedAndModifiedEntity {
     private long readCount;
 
     @JoinColumn(name = "postId")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     public void update(Post post) {
