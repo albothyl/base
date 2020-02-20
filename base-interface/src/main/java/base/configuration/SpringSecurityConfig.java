@@ -55,7 +55,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
 			.authorizeRequests()
-			.antMatchers("/resources", "/signup", "/hello", "/public", "/boards", "/boards/{seq}", "/members/**", "/posts", "/posts/{postId}")
+			.antMatchers("/resources", "/signup", "/hello", "/public", "/boards", "/boards/{seq}", "/members/**", "/posts", "/posts/{postId}", "/posts/comment", "/posts/comment/{commentId}")
 			.permitAll()
 			.anyRequest()
 			.authenticated()
