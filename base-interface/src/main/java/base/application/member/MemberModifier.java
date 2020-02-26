@@ -18,7 +18,7 @@ public class MemberModifier {
 
     public void changePassword(final Long memberId, final String newPassword) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(()-> new MemberNotFoundException(memberId));
 
         final String currentPassword = member.getMemberPassword();
 

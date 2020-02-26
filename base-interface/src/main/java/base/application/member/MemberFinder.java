@@ -1,7 +1,7 @@
 package base.application.member;
 
 import base.domain.member.entity.Member;
-import base.domain.member.exception.MemberNotFoundException;
+import base.domain.member.exception.EmailNotFoundException;
 import base.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class MemberFinder {
 
     public Member findByMemberEmail(final String memberEmail) {
         final Member member = memberRepository.findByMemberEmail(memberEmail)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new EmailNotFoundException(memberEmail));
         return member;
     }
 }

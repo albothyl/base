@@ -4,9 +4,9 @@ import base.domain.support.exception.EntityNotFoundException;
 
 public class MemberNotFoundException extends EntityNotFoundException {
 
-    private static final String MESSAGE = "member is not found";
+    private static final String MESSAGE = " is not found";
 
-    public MemberNotFoundException() {
-        super(MESSAGE);
+    public MemberNotFoundException(final Long memberId) {
+        super(memberId+MESSAGE);
     }
 }
